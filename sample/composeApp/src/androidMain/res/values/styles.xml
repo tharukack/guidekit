@@ -1,0 +1,9 @@
+<resources>
+    <style name="Theme.GuideKitSample" parent="android:style/Theme.Material.Light.NoActionBar">
+        <item name="android:windowActionBar">false</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:statusBarColor">#F5EFE3</item>
+        <item name="android:navigationBarColor">#F5EFE3</item>
+    </style>
+</resources>

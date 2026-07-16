@@ -1,0 +1,47 @@
+# Gradle
+.gradle/
+build/
+**/build/
+!gradle/wrapper/gradle-wrapper.jar
+
+# Local configuration
+local.properties
+*.properties.local
+
+# Android Studio / IntelliJ
+.idea/
+*.iml
+*.iws
+*.ipr
+out/
+
+# Kotlin / Kotlin Native
+.kotlin/
+.konan/
+
+# Android generated outputs
+captures/
+.externalNativeBuild/
+.cxx/
+*.apk
+*.aab
+*.ap_
+*.aar
+
+# iOS / Xcode generated outputs
+DerivedData/
+*.xcuserstate
+*.xcworkspace/xcuserdata/
+*.xcodeproj/xcuserdata/
+*.xcodeproj/project.xcworkspace/xcuserdata/
+
+# Signing and secrets
+*.jks
+*.keystore
+*.p8
+*.p12
+*.mobileprovision
+
+# OS files
+.DS_Store
+Thumbs.db
