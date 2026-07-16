@@ -8,7 +8,7 @@ plugins {
     id("maven-publish")
 }
 
-group = "io.github.tharukack"
+group = "io.github.tharukack.guidekit"
 version = "0.1.0"
 
 kotlin {
@@ -44,7 +44,7 @@ kotlin {
 }
 
 android {
-    namespace = "io.github.guidekit"
+    namespace = "io.github.tharukack.guidekit"
     compileSdk = libs.versions.android.compileSdk.get().toInt()
 
     defaultConfig {

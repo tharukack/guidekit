@@ -39,11 +39,11 @@ kotlin {
 }
 
 android {
-    namespace = "io.github.guidekit.sample"
+    namespace = "io.github.tharukack.guidekit.sample"
     compileSdk = libs.versions.android.compileSdk.get().toInt()
 
     defaultConfig {
-        applicationId = "io.github.guidekit.sample"
+        applicationId = "io.github.tharukack.guidekit.sample"
         minSdk = libs.versions.android.minSdk.get().toInt()
         targetSdk = libs.versions.android.targetSdk.get().toInt()
         versionCode = 1

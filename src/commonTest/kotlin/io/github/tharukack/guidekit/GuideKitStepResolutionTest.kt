@@ -1,4 +1,4 @@
-package io.github.guidekit
+package io.github.tharukack.guidekit
 
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.unit.dp

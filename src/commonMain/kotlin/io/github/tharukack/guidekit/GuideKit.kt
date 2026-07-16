@@ -1,4 +1,4 @@
-package io.github.guidekit
+package io.github.tharukack.guidekit
 
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.SizeTransform

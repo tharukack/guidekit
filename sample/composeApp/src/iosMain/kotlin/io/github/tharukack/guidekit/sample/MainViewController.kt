@@ -1,4 +1,4 @@
-package io.github.guidekit.sample
+package io.github.tharukack.guidekit.sample
 
 import androidx.compose.ui.window.ComposeUIViewController
 

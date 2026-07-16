@@ -1,4 +1,4 @@
-package io.github.guidekit.sample
+package io.github.tharukack.guidekit.sample
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
@@ -47,20 +47,20 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import io.github.guidekit.GuideKit
-import io.github.guidekit.GuideKitAnchor
-import io.github.guidekit.GuideKitArrowConfig
-import io.github.guidekit.GuideKitArrowHead
-import io.github.guidekit.GuideKitArrowLineStyle
-import io.github.guidekit.GuideKitArrowStroke
-import io.github.guidekit.GuideKitAutoScrollConfig
-import io.github.guidekit.GuideKitInstructionBoxShadow
-import io.github.guidekit.GuideKitInstructionBoxStyle
-import io.github.guidekit.GuideKitStep
-import io.github.guidekit.GuideKitStyle
-import io.github.guidekit.GuideKitTargetHighlightShape
-import io.github.guidekit.GuideKitTargetHighlightStroke
-import io.github.guidekit.GuideKitTargetHighlightStyle
+import io.github.tharukack.guidekit.GuideKit
+import io.github.tharukack.guidekit.GuideKitAnchor
+import io.github.tharukack.guidekit.GuideKitArrowConfig
+import io.github.tharukack.guidekit.GuideKitArrowHead
+import io.github.tharukack.guidekit.GuideKitArrowLineStyle
+import io.github.tharukack.guidekit.GuideKitArrowStroke
+import io.github.tharukack.guidekit.GuideKitAutoScrollConfig
+import io.github.tharukack.guidekit.GuideKitInstructionBoxShadow
+import io.github.tharukack.guidekit.GuideKitInstructionBoxStyle
+import io.github.tharukack.guidekit.GuideKitStep
+import io.github.tharukack.guidekit.GuideKitStyle
+import io.github.tharukack.guidekit.GuideKitTargetHighlightShape
+import io.github.tharukack.guidekit.GuideKitTargetHighlightStroke
+import io.github.tharukack.guidekit.GuideKitTargetHighlightStyle
 
 private const val TargetHero = "hero"
 private const val TargetProgress = "progress"

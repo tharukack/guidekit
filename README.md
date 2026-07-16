@@ -68,7 +68,7 @@ Add GuideKit to the source set where you use it:
 kotlin {
     sourceSets {
         commonMain.dependencies {
-            implementation("io.github.tharukack:guidekit:0.1.0")
+            implementation("io.github.tharukack.guidekit:guidekit:0.1.0")
         }
     }
 }
@@ -90,8 +90,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.layout.boundsInRoot
 import androidx.compose.ui.layout.onGloballyPositioned
-import io.github.guidekit.GuideKit
-import io.github.guidekit.GuideKitStep
+import io.github.tharukack.guidekit.GuideKit
+import io.github.tharukack.guidekit.GuideKitStep
 
 @Composable
 fun ProductScreen() {
@@ -207,9 +207,9 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import io.github.guidekit.GuideKitStyle
-import io.github.guidekit.GuideKitInstructionBoxStyle
-import io.github.guidekit.GuideKitTargetHighlightStyle
+import io.github.tharukack.guidekit.GuideKitStyle
+import io.github.tharukack.guidekit.GuideKitInstructionBoxStyle
+import io.github.tharukack.guidekit.GuideKitTargetHighlightStyle
 
 GuideKit(
     steps = steps,
@@ -264,8 +264,8 @@ GuideKitStep(
 Use circular highlights for icons, avatars, floating action buttons, and compact controls.
 
 ```kotlin
-import io.github.guidekit.GuideKitTargetHighlightShape
-import io.github.guidekit.GuideKitTargetHighlightStyle
+import io.github.tharukack.guidekit.GuideKitTargetHighlightShape
+import io.github.tharukack.guidekit.GuideKitTargetHighlightStyle
 
 GuideKitStep(
     targetBounds = targetBounds["avatar"],
@@ -337,11 +337,11 @@ Arrows are enabled by default. Configure direction with anchors and choose solid
 
 ```kotlin
 import androidx.compose.ui.graphics.StrokeCap
-import io.github.guidekit.GuideKitAnchor
-import io.github.guidekit.GuideKitArrowConfig
-import io.github.guidekit.GuideKitArrowHead
-import io.github.guidekit.GuideKitArrowLineStyle
-import io.github.guidekit.GuideKitArrowStroke
+import io.github.tharukack.guidekit.GuideKitAnchor
+import io.github.tharukack.guidekit.GuideKitArrowConfig
+import io.github.tharukack.guidekit.GuideKitArrowHead
+import io.github.tharukack.guidekit.GuideKitArrowLineStyle
+import io.github.tharukack.guidekit.GuideKitArrowStroke
 
 GuideKitStep(
     targetBounds = targetBounds["cta"],
