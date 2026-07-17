@@ -5,11 +5,11 @@ plugins {
     id("com.android.library")
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
-    id("maven-publish")
+    alias(libs.plugins.vanniktech.maven.publish)
 }
 
-group = "io.github.tharukack.guidekit"
-version = "0.1.0-SNAPSHOT"
+group = "io.github.tharukack"
+version = "0.1.1"
 
 kotlin {
     androidTarget {
@@ -54,5 +54,53 @@ android {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
+    }
+}
+
+mavenPublishing {
+    publishToMavenCentral()
+    signAllPublications()
+
+    coordinates(
+        groupId = "io.github.tharukack",
+        artifactId = "guidekit",
+        version = version.toString(),
+    )
+
+    pom {
+        name.set("GuideKit")
+        description.set(
+            "A Compose Multiplatform coachmark overlay library for " +
+                    "product tours, onboarding hints, and guided feature discovery."
+        )
+
+        inceptionYear.set("2026")
+        url.set("https://github.com/tharukack/guidekit")
+
+        licenses {
+            license {
+                name.set("MIT License")
+                url.set("https://opensource.org/licenses/MIT")
+                distribution.set("repo")
+            }
+        }
+
+        developers {
+            developer {
+                id.set("tharukack")
+                name.set("Tharuka Chathura")
+                url.set("https://github.com/tharukack")
+            }
+        }
+
+        scm {
+            url.set("https://github.com/tharukack/guidekit")
+            connection.set(
+                "scm:git:git://github.com/tharukack/guidekit.git"
+            )
+            developerConnection.set(
+                "scm:git:ssh://git@github.com/tharukack/guidekit.git"
+            )
+        }
     }
 }
