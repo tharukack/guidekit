@@ -2,8 +2,6 @@
   <img src="docs/assets/guide_kit_logo_horizontal.png" alt="GuideKit" width="420" />
 </p>
 
-<h1 align="center">GuideKit</h1>
-
 <p align="center">
   <strong>Beautiful coach marks for Compose Multiplatform</strong>
 </p>
@@ -13,12 +11,12 @@
 </p>
 
 <p align="center">
-  <a href="https://central.sonatype.com/search?q=guidekit"><img alt="Maven Central" src="https://img.shields.io/badge/Maven%20Central-latest-1f6feb?style=for-the-badge" /></a>
-  <img alt="Android" src="https://img.shields.io/badge/Android-supported-3DDC84?style=for-the-badge&logo=android&logoColor=white" />
-  <img alt="iOS" src="https://img.shields.io/badge/iOS-supported-111111?style=for-the-badge&logo=apple&logoColor=white" />
+  <a href="https://central.sonatype.com/search?q=guidekit"><img alt="Maven Central" src="https://img.shields.io/badge/Maven%20Central-0.1.1-1f6feb?style=for-the-badge" /></a>
+  <img alt="Version" src="https://img.shields.io/badge/version-0.1.1-0f766e?style=for-the-badge" />
+  <img alt="Android" src="https://img.shields.io/badge/Android-supported-16A34A?style=for-the-badge&logo=android&logoColor=white" />
+  <img alt="iOS" src="https://img.shields.io/badge/iOS-supported-2563EB?style=for-the-badge&logo=apple&logoColor=white" />
   <img alt="Kotlin Multiplatform" src="https://img.shields.io/badge/Kotlin%20Multiplatform-ready-7F52FF?style=for-the-badge&logo=kotlin&logoColor=white" />
-  <img alt="MIT License" src="https://img.shields.io/badge/License-MIT-0f766e?style=for-the-badge" />
-  <img alt="CI" src="https://img.shields.io/badge/CI-passing-22c55e?style=for-the-badge&logo=githubactions&logoColor=white" />
+  <img alt="MIT License" src="https://img.shields.io/badge/License-MIT-111827?style=for-the-badge" />
 </p>
 
 <p align="center">
@@ -41,7 +39,7 @@
 Add GuideKit to the Compose Multiplatform source set where you want to show tours.
 
 ```kotlin
-implementation("io.github.tharukack:guidekit:<latest-version>")
+implementation("io.github.tharukack:guidekit:0.1.1")
 ```
 
 For Kotlin Multiplatform projects:
@@ -50,14 +48,11 @@ For Kotlin Multiplatform projects:
 kotlin {
     sourceSets {
         commonMain.dependencies {
-            implementation("io.github.tharukack:guidekit:<latest-version>")
+            implementation("io.github.tharukack:guidekit:0.1.1")
         }
     }
 }
 ```
-
-> GuideKit is designed for Compose Multiplatform apps. Your app owns its Gradle setup; GuideKit ships as a library dependency.
-
 ---
 
 ## Quick Start
@@ -101,11 +96,13 @@ See the [`sample`](sample/) app for full configuration, styling, auto-scroll, ar
 ## Live Demo
 
 <p align="center">
-  <img src="docs/assets/demo_1.gif" alt="GuideKit demo showing coach marks and arrows" width="320" />
+  <img src="docs/assets/demo_1.gif" alt="GuideKit demo showing coach marks, arrows, and auto-scroll" width="320" />
+  &nbsp;&nbsp;&nbsp;
+  <img src="docs/assets/demo_2.gif" alt="GuideKit demo showing alternate styling and circular highlights" width="320" />
 </p>
 
 <p align="center">
-  GuideKit renders above your real Compose UI. The host only provides measured bounds and step content.
+  Both demos showcase the same core idea: GuideKit renders polished tours above your real Compose UI while your app provides measured targets and callbacks.
 </p>
 
 ---
@@ -128,10 +125,6 @@ See the [`sample`](sample/) app for full configuration, styling, auto-scroll, ar
 ---
 
 ## Feature Gallery
-
-<p align="center">
-  <img src="docs/assets/demo_2.gif" alt="GuideKit second demo with alternate styling" width="320" />
-</p>
 
 | Highlights | Arrows | Cards |
 | --- | --- | --- |
