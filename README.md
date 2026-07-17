@@ -33,6 +33,20 @@
 
 ---
 
+## Live Demo
+
+<p align="center">
+  <img src="docs/assets/demo_1_1.gif" alt="GuideKit demo showing coach marks, arrows, and auto-scroll" width="320" />
+  &nbsp;&nbsp;&nbsp;
+  <img src="docs/assets/demo_1_2.gif" alt="GuideKit demo showing alternate styling and circular highlights" width="320" />
+</p>
+
+<p align="center">
+  Both demos showcase the same core idea: GuideKit renders polished tours above your real Compose UI while your app provides measured targets and callbacks.
+</p>
+
+---
+
 ## Installation
 
 Add GuideKit to the Compose Multiplatform source set where you want to show tours.
@@ -89,20 +103,6 @@ fun ProductScreen() {
 ```
 
 See the [`sample`](sample/) app for full configuration, styling, auto-scroll, arrow variants, rounded highlights, and circular highlights.
-
----
-
-## Live Demo
-
-<p align="center">
-  <img src="docs/assets/demo_1.gif" alt="GuideKit demo showing coach marks, arrows, and auto-scroll" width="320" />
-  &nbsp;&nbsp;&nbsp;
-  <img src="docs/assets/demo_2.gif" alt="GuideKit demo showing alternate styling and circular highlights" width="320" />
-</p>
-
-<p align="center">
-  Both demos showcase the same core idea: GuideKit renders polished tours above your real Compose UI while your app provides measured targets and callbacks.
-</p>
 
 ---
 
