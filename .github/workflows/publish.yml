@@ -32,6 +32,20 @@ jobs:
       - name: Build and test
         run: ./gradlew build allTests --stacktrace
 
+      - name: Verify release version
+        if: github.event_name == 'release'
+        run: |
+          TAG_VERSION="${GITHUB_REF_NAME#v}"
+          PROJECT_VERSION=$(./gradlew properties -q | awk '/^version:/ { print $2 }')
+
+          echo "Release tag version: $TAG_VERSION"
+          echo "Gradle project version: $PROJECT_VERSION"
+
+          if [ "$TAG_VERSION" != "$PROJECT_VERSION" ]; then
+            echo "Release tag and Gradle version do not match."
+            exit 1
+          fi
+
       - name: Publish to Maven Central
         run: ./gradlew publishToMavenCentral --stacktrace
         env:

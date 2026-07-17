@@ -25,6 +25,8 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -68,8 +70,24 @@ private const val TargetPrimaryAction = "primaryAction"
 private const val TargetMetric = "metric"
 private const val TargetHelp = "help"
 
+private const val StudioHero = "studioHero"
+private const val StudioTimeline = "studioTimeline"
+private const val StudioAudience = "studioAudience"
+private const val StudioLaunch = "studioLaunch"
+private const val StudioSupport = "studioSupport"
+
 private val HeroCardCornerRadius = 34.dp
 private val HelpCardCornerRadius = 32.dp
+private val StudioHeroCornerRadius = 38.dp
+private val StudioSupportCornerRadius = 30.dp
+
+private enum class SampleDestination(
+    val label: String,
+    val marker: String,
+) {
+    Essentials("Essentials", "1"),
+    Studio("Studio", "2"),
+}
 
 @Composable
 fun App() {
@@ -80,16 +98,69 @@ fun App() {
 
 @Composable
 private fun GuideKitSampleScreen() {
+    var selectedDestination by remember { mutableStateOf(SampleDestination.Essentials) }
+
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(sampleBackground(selectedDestination)),
+    ) {
+        when (selectedDestination) {
+            SampleDestination.Essentials -> EssentialsGuideDemo(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(bottom = 92.dp),
+            )
+            SampleDestination.Studio -> StudioGuideDemo(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(bottom = 92.dp),
+            )
+        }
+
+        SampleBottomNavigation(
+            selectedDestination = selectedDestination,
+            onDestinationSelected = { selectedDestination = it },
+            modifier = Modifier.align(Alignment.BottomCenter),
+        )
+    }
+}
+
+@Composable
+private fun SampleBottomNavigation(
+    selectedDestination: SampleDestination,
+    onDestinationSelected: (SampleDestination) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    NavigationBar(
+        modifier = modifier.fillMaxWidth(),
+        containerColor = Color(0xFFFFF8EC),
+        tonalElevation = 18.dp,
+    ) {
+        SampleDestination.entries.forEach { destination ->
+            NavigationBarItem(
+                selected = selectedDestination == destination,
+                onClick = { onDestinationSelected(destination) },
+                icon = {
+                    Text(
+                        text = destination.marker,
+                        fontWeight = FontWeight.Black,
+                    )
+                },
+                label = { Text(destination.label) },
+            )
+        }
+    }
+}
+
+@Composable
+private fun EssentialsGuideDemo(modifier: Modifier = Modifier) {
     val targetBounds = remember { mutableStateMapOf<String, Rect>() }
     val scrollState = rememberScrollState()
     var showTour by remember { mutableStateOf(true) }
     var lastEvent by remember { mutableStateOf("Tour is ready") }
 
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(sampleBackground()),
-    ) {
+    Box(modifier = modifier) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -138,6 +209,68 @@ private fun GuideKitSampleScreen() {
                 onFinished = {
                     showTour = false
                     lastEvent = "Tour finished"
+                },
+            )
+        }
+    }
+}
+
+@Composable
+private fun StudioGuideDemo(modifier: Modifier = Modifier) {
+    val targetBounds = remember { mutableStateMapOf<String, Rect>() }
+    val scrollState = rememberScrollState()
+    var showTour by remember { mutableStateOf(true) }
+    var lastEvent by remember { mutableStateOf("Studio tour is ready") }
+
+    Box(modifier = modifier) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .verticalScroll(scrollState)
+                .padding(horizontal = 20.dp, vertical = 28.dp),
+            verticalArrangement = Arrangement.spacedBy(18.dp),
+        ) {
+            Spacer(Modifier.height(10.dp))
+            StudioHeroCard(
+                modifier = Modifier.trackGuideTarget(StudioHero, targetBounds),
+                onRestartTour = {
+                    lastEvent = "Studio tour restarted"
+                    showTour = true
+                },
+            )
+            StudioTimelineCard(
+                modifier = Modifier.trackGuideTarget(StudioTimeline, targetBounds),
+            )
+            StudioMetricsRow(
+                audienceModifier = Modifier.trackGuideTarget(StudioAudience, targetBounds),
+                launchModifier = Modifier.trackGuideTarget(StudioLaunch, targetBounds),
+            )
+            StudioSupportCard(
+                modifier = Modifier.trackGuideTarget(StudioSupport, targetBounds),
+            )
+            Spacer(Modifier.height(240.dp))
+            Text(
+                text = lastEvent,
+                color = Color(0xFF6A4B40),
+                style = MaterialTheme.typography.bodyMedium,
+                modifier = Modifier.fillMaxWidth(),
+                textAlign = TextAlign.Center,
+            )
+        }
+
+        if (showTour) {
+            GuideKit(
+                steps = studioGuideSteps(targetBounds),
+                style = studioGuideStyle(),
+                onScrollBy = { deltaPx -> scrollState.animateScrollBy(deltaPx) },
+                onStepChanged = { index -> lastEvent = "Viewing studio step ${index + 1}" },
+                onSkipped = {
+                    showTour = false
+                    lastEvent = "Studio tour skipped"
+                },
+                onFinished = {
+                    showTour = false
+                    lastEvent = "Studio tour finished"
                 },
             )
         }
@@ -318,6 +451,214 @@ private fun HelpCard(modifier: Modifier) {
 }
 
 @Composable
+private fun StudioHeroCard(
+    modifier: Modifier,
+    onRestartTour: () -> Unit,
+) {
+    Card(
+        modifier = modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(StudioHeroCornerRadius),
+        colors = CardDefaults.cardColors(containerColor = Color(0xFF402015)),
+    ) {
+        Column(
+            modifier = Modifier.padding(26.dp),
+            verticalArrangement = Arrangement.spacedBy(18.dp),
+        ) {
+            Text(
+                text = "Launch Studio",
+                color = Color(0xFFFFF1E8),
+                style = MaterialTheme.typography.headlineLarge,
+                fontWeight = FontWeight.Black,
+            )
+            Text(
+                text = "A second tour with coral accents, different card styles, circular callouts, and alternate arrow placement.",
+                color = Color(0xFFFFD7C7),
+                style = MaterialTheme.typography.bodyLarge,
+            )
+            Button(
+                onClick = onRestartTour,
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color(0xFFFF6B4A),
+                    contentColor = Color(0xFF2D130D),
+                ),
+            ) {
+                Text("Replay studio tour")
+            }
+        }
+    }
+}
+
+@Composable
+private fun StudioTimelineCard(modifier: Modifier) {
+    Surface(
+        modifier = modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(30.dp),
+        color = Color(0xFFFFF1E8),
+        border = BorderStroke(1.dp, Color(0xFFFFB39E)),
+    ) {
+        Column(
+            modifier = Modifier.padding(22.dp),
+            verticalArrangement = Arrangement.spacedBy(14.dp),
+        ) {
+            Text(
+                text = "Campaign timeline",
+                color = Color(0xFF402015),
+                style = MaterialTheme.typography.titleLarge,
+                fontWeight = FontWeight.Black,
+            )
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(10.dp),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                StudioStagePill("Plan", true)
+                StudioStagePill("Design", true)
+                StudioStagePill("Ship", false)
+            }
+            Text(
+                text = "Use per-step instruction cards to point at wider layout sections without changing your production UI.",
+                color = Color(0xFF6A4B40),
+                style = MaterialTheme.typography.bodyMedium,
+            )
+        }
+    }
+}
+
+@Composable
+private fun StudioStagePill(label: String, active: Boolean) {
+    Surface(
+        shape = RoundedCornerShape(999.dp),
+        color = if (active) Color(0xFFFF6B4A) else Color(0xFFFFD8CB),
+    ) {
+        Text(
+            text = label,
+            color = if (active) Color(0xFF2D130D) else Color(0xFF6A4B40),
+            style = MaterialTheme.typography.labelLarge,
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier.padding(horizontal = 14.dp, vertical = 8.dp),
+        )
+    }
+}
+
+@Composable
+private fun StudioMetricsRow(
+    audienceModifier: Modifier,
+    launchModifier: Modifier,
+) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.spacedBy(14.dp),
+    ) {
+        StudioMetricCard(
+            title = "Audience",
+            value = "24k",
+            body = "Targeted segment ready for onboarding.",
+            modifier = audienceModifier.weight(1f),
+            color = Color(0xFFFFD8CB),
+        )
+        StudioMetricCard(
+            title = "Launch",
+            value = "84%",
+            body = "Use a circular highlight on compact progress cards.",
+            modifier = launchModifier
+                .weight(1f)
+                .aspectRatio(1f),
+            color = Color(0xFFFFB39E),
+            circular = true,
+        )
+    }
+}
+
+@Composable
+private fun StudioMetricCard(
+    title: String,
+    value: String,
+    body: String,
+    modifier: Modifier,
+    color: Color,
+    circular: Boolean = false,
+) {
+    val contentModifier = if (circular) {
+        Modifier
+            .fillMaxSize()
+            .padding(22.dp)
+    } else {
+        Modifier.padding(18.dp)
+    }
+
+    Surface(
+        modifier = modifier,
+        shape = if (circular) CircleShape else RoundedCornerShape(26.dp),
+        color = color,
+        tonalElevation = 0.dp,
+    ) {
+        Column(
+            modifier = contentModifier,
+            verticalArrangement = if (circular) Arrangement.Center else Arrangement.spacedBy(8.dp),
+            horizontalAlignment = if (circular) Alignment.CenterHorizontally else Alignment.Start,
+        ) {
+            Text(
+                text = value,
+                color = Color(0xFF402015),
+                style = MaterialTheme.typography.headlineMedium,
+                fontWeight = FontWeight.Black,
+                textAlign = if (circular) TextAlign.Center else TextAlign.Start,
+            )
+            Text(
+                text = title,
+                color = Color(0xFF402015),
+                style = MaterialTheme.typography.titleSmall,
+                fontWeight = FontWeight.Bold,
+                textAlign = if (circular) TextAlign.Center else TextAlign.Start,
+            )
+            Text(
+                text = body,
+                color = Color(0xFF6A4B40),
+                style = MaterialTheme.typography.bodySmall,
+                textAlign = if (circular) TextAlign.Center else TextAlign.Start,
+            )
+        }
+    }
+}
+
+@Composable
+private fun StudioSupportCard(modifier: Modifier) {
+    Surface(
+        modifier = modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(StudioSupportCornerRadius),
+        color = Color(0xFF1E2E36),
+    ) {
+        Row(
+            modifier = Modifier.padding(22.dp),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Box(
+                modifier = Modifier
+                    .size(62.dp)
+                    .clip(CircleShape)
+                    .background(Color(0xFFFF6B4A)),
+                contentAlignment = Alignment.Center,
+            ) {
+                Text("!", color = Color(0xFF2D130D), fontWeight = FontWeight.Black)
+            }
+            Spacer(Modifier.width(16.dp))
+            Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
+                Text(
+                    text = "Review before launch",
+                    color = Color.White,
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Bold,
+                )
+                Text(
+                    text = "This lower card demonstrates auto-scroll with a different style and accent color.",
+                    color = Color(0xFFCFE1E8),
+                    style = MaterialTheme.typography.bodyMedium,
+                )
+            }
+        }
+    }
+}
+
+@Composable
 private fun StatusPill(label: String, value: String) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         Text(
@@ -410,6 +751,83 @@ private fun guideSteps(targetBounds: Map<String, Rect>): List<GuideKitStep> = li
     ),
 )
 
+private fun studioGuideSteps(targetBounds: Map<String, Rect>): List<GuideKitStep> = listOf(
+    GuideKitStep(
+        targetBounds = targetBounds[StudioHero],
+        title = "A second visual system",
+        description = "This screen reuses GuideKit with a coral accent, new shapes, and independent tour state.",
+        descriptionHighlights = listOf("coral accent", "independent"),
+        targetHighlight = studioRoundedTargetHighlight(StudioHeroCornerRadius),
+        arrowConfig = GuideKitArrowConfig(
+            from = GuideKitAnchor.TopCenter,
+            to = GuideKitAnchor.BottomCenter,
+            lineStyle = GuideKitArrowLineStyle.Solid,
+        ),
+    ),
+    GuideKitStep(
+        targetBounds = targetBounds[StudioTimeline],
+        title = "Point at wide sections",
+        description = "Instruction cards can be narrower than the target while the highlight follows the full section.",
+        descriptionHighlight = "highlight follows the full section",
+        targetHighlight = studioRoundedTargetHighlight(30.dp),
+        arrowConfig = GuideKitArrowConfig(
+            enabled = false
+        ),
+        instructionBox = GuideKitInstructionBoxStyle(
+            alignment = Alignment.BottomCenter,
+            maxWidth = 230.dp,
+            shape = RoundedCornerShape(28.dp),
+            containerColor = Color(0xFFFFF1E8),
+            border = BorderStroke(1.dp, Color(0xFFFF6B4A).copy(alpha = 0.45f)),
+        ),
+    ),
+    GuideKitStep(
+        targetBounds = targetBounds[StudioAudience],
+        title = "Use another arrow path",
+        description = "Change anchors per step to route the arrow around different layouts.",
+        descriptionHighlights = listOf("anchors", "per step"),
+        arrowConfig = GuideKitArrowConfig(
+            from = GuideKitAnchor.TopRight,
+            to = GuideKitAnchor.TopLeft,
+            lineStyle = GuideKitArrowLineStyle.Dashed,
+            dashIntervalsPx = floatArrayOf(12f, 10f),
+        ),
+    ),
+    GuideKitStep(
+        targetBounds = targetBounds[StudioLaunch],
+        title = "Circular cards work too",
+        description = "Square target bounds can become clean circular highlights with one style flag.",
+        descriptionHighlights = listOf("circular highlights", "one style flag"),
+        arrowConfig = GuideKitArrowConfig(
+            to = GuideKitAnchor.CenterLeft
+        ),
+        targetHighlight = GuideKitTargetHighlightStyle(
+            shape = GuideKitTargetHighlightShape.Circle,
+            paddingPx = 16f,
+            glowStrokes = listOf(
+                GuideKitTargetHighlightStroke(widthPx = 34f, alpha = 0.12f, color = Color(0xFFFF6B4A)),
+                GuideKitTargetHighlightStroke(widthPx = 18f, alpha = 0.30f, color = Color(0xFFFF6B4A)),
+                GuideKitTargetHighlightStroke(widthPx = 7f, alpha = 0.60f, color = Color(0xFFFF6B4A)),
+            ),
+        ),
+    ),
+    GuideKitStep(
+        targetBounds = targetBounds[StudioSupport],
+        title = "Auto-scroll with another theme",
+        description = "The same scroll callback works across screens and styles.",
+        descriptionHighlights = listOf("scroll callback", "screens and styles"),
+        primaryButtonText = "Done",
+        autoScroll = GuideKitAutoScrollConfig(enabled = true),
+        targetHighlight = studioRoundedTargetHighlight(StudioSupportCornerRadius),
+        arrowConfig = GuideKitArrowConfig(
+            from = GuideKitAnchor.TopCenter,
+            to = GuideKitAnchor.BottomRight,
+            curveSeed = 3,
+            arrowHead = GuideKitArrowHead.TargetSide,
+        ),
+    ),
+)
+
 private fun sampleGuideStyle() = GuideKitStyle(
     accentColor = Color(0xFFFFC857),
     overlayColor = Color(0xFF091E1A).copy(alpha = 0.70f),
@@ -433,6 +851,35 @@ private fun sampleGuideStyle() = GuideKitStyle(
     ),
 )
 
+private fun studioGuideStyle() = GuideKitStyle(
+    accentColor = Color(0xFFFF6B4A),
+    overlayColor = Color(0xFF2D130D).copy(alpha = 0.70f),
+    primaryButtonContentColor = Color(0xFF2D130D),
+    arrowConfig = GuideKitArrowConfig(
+        minVisibleDistance = 26.dp,
+        dashIntervalsPx = floatArrayOf(14f, 10f),
+        strokeCap = StrokeCap.Round,
+        strokes = listOf(
+            GuideKitArrowStroke(widthPx = 9f, color = Color.Black.copy(alpha = 0.22f)),
+            GuideKitArrowStroke(widthPx = 5.2f, color = Color(0xFFFF6B4A)),
+            GuideKitArrowStroke(widthPx = 1.6f, color = Color.White.copy(alpha = 0.54f)),
+        ),
+    ),
+    targetHighlight = studioRoundedTargetHighlight(28.dp),
+    instructionBox = GuideKitInstructionBoxStyle(
+        outerPadding = PaddingValues(horizontal = 18.dp, vertical = 28.dp),
+        shape = RoundedCornerShape(28.dp),
+        containerColor = Color(0xFFFFF1E8),
+        contentColor = Color(0xFF402015),
+        border = BorderStroke(1.dp, Color(0xFFFF6B4A).copy(alpha = 0.42f)),
+        shadow = GuideKitInstructionBoxShadow(
+            elevation = 34.dp,
+            ambientColor = Color.Black.copy(alpha = 0.36f),
+            spotColor = Color.Black.copy(alpha = 0.36f),
+        ),
+    ),
+)
+
 private fun sampleRoundedTargetHighlight(cornerRadius: Dp) =
     GuideKitTargetHighlightStyle(
         cornerRadius = cornerRadius,
@@ -440,13 +887,31 @@ private fun sampleRoundedTargetHighlight(cornerRadius: Dp) =
         borderWidthPx = 3f,
     )
 
-private fun sampleBackground() = Brush.verticalGradient(
-    colors = listOf(
-        Color(0xFFF5EFE3),
-        Color(0xFFEAF3E5),
-        Color(0xFFD9E8F4),
-    ),
-)
+private fun studioRoundedTargetHighlight(cornerRadius: Dp) =
+    GuideKitTargetHighlightStyle(
+        cornerRadius = cornerRadius,
+        paddingPx = 11f,
+        borderWidthPx = 3f,
+        borderColor = Color(0xFFFF6B4A),
+        innerBorderColor = Color.White.copy(alpha = 0.74f),
+    )
+
+private fun sampleBackground(destination: SampleDestination) = when (destination) {
+    SampleDestination.Essentials -> Brush.verticalGradient(
+        colors = listOf(
+            Color(0xFFF5EFE3),
+            Color(0xFFEAF3E5),
+            Color(0xFFD9E8F4),
+        ),
+    )
+    SampleDestination.Studio -> Brush.verticalGradient(
+        colors = listOf(
+            Color(0xFFFFF2E8),
+            Color(0xFFFFE1D4),
+            Color(0xFFEAF2F5),
+        ),
+    )
+}
 
 private fun Modifier.trackGuideTarget(
     key: String,

@@ -32,7 +32,7 @@ kotlin {
         commonMain.dependencies {
             api(libs.compose.runtime)
             api(libs.compose.ui)
-            implementation(libs.compose.foundation)
+            api(libs.compose.foundation)
             implementation(libs.compose.material3)
             implementation(libs.compose.material.icons.core)
             implementation(libs.compose.material.icons.extended)
