@@ -743,6 +743,31 @@ private fun androidx.compose.ui.graphics.drawscope.DrawScope.drawGuideKitArrow(
     val secondControl = end
         .minusScaled(endDirection, controlDistance)
         .minusScaled(bendDirection, bendAmount * 0.72f)
+    val hasTargetArrowHead = config.arrowHead == GuideKitArrowHead.TargetSide ||
+        config.arrowHead == GuideKitArrowHead.BothSides
+    val hasInstructionArrowHead = config.arrowHead == GuideKitArrowHead.InstructionBoxSide ||
+        config.arrowHead == GuideKitArrowHead.BothSides
+    val targetArrowDirection = end.minus(secondControl).normalized()
+    val instructionArrowDirection = start.minus(firstControl).normalized()
+    val arrowHeadNeckDistance = config.arrowHeadNeckDistance(distance)
+    val bodyStart = if (hasInstructionArrowHead) {
+        start.minusScaled(instructionArrowDirection, arrowHeadNeckDistance)
+    } else {
+        start
+    }
+    val bodyEnd = if (hasTargetArrowHead) {
+        end.minusScaled(targetArrowDirection, arrowHeadNeckDistance)
+    } else {
+        end
+    }
+    val bodyDistance = bodyStart.distanceTo(bodyEnd)
+    val bodyControlDistance = (bodyDistance * 0.34f).coerceIn(70f, 180f)
+    val bodyFirstControl = bodyStart
+        .plusScaled(startDirection, bodyControlDistance)
+        .plusScaled(bendDirection, bendAmount)
+    val bodySecondControl = bodyEnd
+        .minusScaled(endDirection, bodyControlDistance)
+        .minusScaled(bendDirection, bendAmount * 0.72f)
     val pathEffect = when (config.lineStyle) {
         GuideKitArrowLineStyle.Solid -> null
         GuideKitArrowLineStyle.Dashed -> config.dashIntervalsPx
@@ -755,14 +780,14 @@ private fun androidx.compose.ui.graphics.drawscope.DrawScope.drawGuideKitArrow(
             }
     }
     val path = Path().apply {
-        moveTo(start.x, start.y)
+        moveTo(bodyStart.x, bodyStart.y)
         cubicTo(
-            firstControl.x,
-            firstControl.y,
-            secondControl.x,
-            secondControl.y,
-            end.x,
-            end.y,
+            bodyFirstControl.x,
+            bodyFirstControl.y,
+            bodySecondControl.x,
+            bodySecondControl.y,
+            bodyEnd.x,
+            bodyEnd.y,
         )
     }
 
@@ -778,18 +803,18 @@ private fun androidx.compose.ui.graphics.drawscope.DrawScope.drawGuideKitArrow(
         )
     }
 
-    if (config.arrowHead == GuideKitArrowHead.TargetSide || config.arrowHead == GuideKitArrowHead.BothSides) {
+    if (hasTargetArrowHead) {
         drawArrowHead(
             tip = end,
-            previousPoint = secondControl,
+            previousPoint = bodyEnd,
             accentColor = color,
             config = config,
         )
     }
-    if (config.arrowHead == GuideKitArrowHead.InstructionBoxSide || config.arrowHead == GuideKitArrowHead.BothSides) {
+    if (hasInstructionArrowHead) {
         drawArrowHead(
             tip = start,
-            previousPoint = firstControl,
+            previousPoint = bodyStart,
             accentColor = color,
             config = config,
         )
@@ -849,6 +874,16 @@ private fun GuideKitArrowConfig.curveBendDirection(start: Offset, end: Offset): 
 private fun GuideKitArrowConfig.curveBendAmount(distance: Float): Float {
     val variation = (((from.ordinal * 19) + (to.ordinal * 13) + (curveSeed * 7)) % 4) * 18f
     return (distance * 0.16f + variation).coerceIn(44f, 128f)
+}
+
+private fun GuideKitArrowConfig.arrowHeadNeckDistance(distance: Float): Float {
+    if (arrowHead == GuideKitArrowHead.None) return 0f
+
+    val wingAngle = arrowHeadAngleDegrees.toRadians()
+    val projectedWingLength = arrowHeadLengthPx * cos(wingAngle)
+    val widestLineStroke = strokes.maxOfOrNull { it.widthPx } ?: 0f
+    val naturalNeckDistance = projectedWingLength + (widestLineStroke * 0.35f)
+    return naturalNeckDistance.coerceAtMost(distance * 0.36f)
 }
 
 private fun Rect.distanceTo(other: Rect): Float {

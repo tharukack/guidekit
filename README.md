@@ -12,7 +12,6 @@
 
 <p align="center">
   <a href="https://central.sonatype.com/search?q=guidekit"><img alt="Maven Central" src="https://img.shields.io/badge/Maven%20Central-0.1.1-1f6feb?style=for-the-badge" /></a>
-  <img alt="Version" src="https://img.shields.io/badge/version-0.1.1-0f766e?style=for-the-badge" />
   <img alt="Android" src="https://img.shields.io/badge/Android-supported-16A34A?style=for-the-badge&logo=android&logoColor=white" />
   <img alt="iOS" src="https://img.shields.io/badge/iOS-supported-2563EB?style=for-the-badge&logo=apple&logoColor=white" />
   <img alt="Kotlin Multiplatform" src="https://img.shields.io/badge/Kotlin%20Multiplatform-ready-7F52FF?style=for-the-badge&logo=kotlin&logoColor=white" />
