@@ -36,7 +36,7 @@
 ## Live Demo
 
 <p align="center">
-  <img src="docs/assets/demo_1_1.gif" alt="GuideKit demo showing coach marks, arrows, and auto-scroll" width="320" />
+  <img src="docs/assets/demo_1.gif" alt="GuideKit demo showing coach marks, arrows, and auto-scroll" width="320" />
   &nbsp;&nbsp;&nbsp;
   <img src="docs/assets/demo_1_2.gif" alt="GuideKit demo showing alternate styling and circular highlights" width="320" />
 </p>
@@ -120,14 +120,6 @@ See the [`sample`](sample/) app for full configuration, styling, auto-scroll, ar
 | Internal step management | GuideKit owns next, previous, skip, finish, and current step state. |
 | Callbacks | React to step changes, skipped tours, and completed tours. |
 | Compose Multiplatform | Shared Kotlin API for Android and iOS Compose apps. |
-
----
-
-## Feature Gallery
-
-| Highlights | Arrows | Cards |
-| --- | --- | --- |
-| Rounded rectangles, circles, glow strokes, borders, cutouts | Solid, dashed, curved, one-sided, two-sided | Alignment, padding, width, colors, borders, shadows |
 
 ---
 
