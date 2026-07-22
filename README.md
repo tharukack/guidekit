@@ -41,10 +41,6 @@
   <img src="docs/assets/demo_1_2.gif" alt="GuideKit demo showing alternate styling and circular highlights" width="320" />
 </p>
 
-<p align="center">
-  Both demos showcase the same core idea: GuideKit renders polished tours above your real Compose UI while your app provides measured targets and callbacks.
-</p>
-
 ---
 
 ## Installation
@@ -70,32 +66,69 @@ kotlin {
 
 ## Quick Start
 
-Measure a target, describe a step, and let GuideKit render the overlay.
+Add GuideKit to the **main composable that occupies the full screen**. It does not matter whether your screen uses a `Scaffold`, a `Box`, or another layout. The guide should be placed at the screen's top level so it can draw above all of its content.
+
+### 1. Keep the external values in the parent screen
+
+Store the measured bounds of the composable you want to highlight. This minimal example uses `rememberSaveable` for guide visibility, but you can use any persistence approach you prefer, such as a ViewModel backed by DataStore or a database, to prevent completed guides from appearing again.
+
+```kotlin
+var targetBounds by remember { mutableStateOf<Rect?>(null) }
+var showGuide by rememberSaveable { mutableStateOf(true) }
+```
+
+### 2. Measure the UI you want to highlight
+
+Pass a bounds callback into the child composable that contains the target. Attach `onGloballyPositioned` to the target itself and send its measured bounds back through that callback.
 
 ```kotlin
 @Composable
-fun ProductScreen() {
-    val targets = remember { mutableStateMapOf<String, Rect>() }
-    var showTour by remember { mutableStateOf(true) }
+fun MainScreenContent(
+    onTargetBoundsChanged: (Rect?) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Column(modifier) {
+        Button(
+            onClick = { /* Your action */ },
+            modifier = Modifier.onGloballyPositioned { coordinates ->
+                onTargetBoundsChanged(coordinates.boundsInRoot())
+            },
+        ) {
+            Text("Create item")
+        }
+    }
+}
+```
+
+### 3. Place GuideKit at the full-screen parent level
+
+Place `GuideKit` in the full-size parent composable, after the screen content. The parent owns `targetBounds` and passes its update callback into `MainScreenContent`. This lets a target inside any nested composable send its bounds to the parent without moving the target itself.
+
+```kotlin
+@Composable
+fun MainScreen() {
+    var targetBounds by remember { mutableStateOf<Rect?>(null) }
+    var showGuide by rememberSaveable { mutableStateOf(true) }
 
     Box(Modifier.fillMaxSize()) {
-        PrimaryButton(
-            modifier = Modifier.onGloballyPositioned { coordinates ->
-                targets["primary"] = coordinates.boundsInRoot()
-            },
+        MainScreenContent(
+            onTargetBoundsChanged = { bounds -> targetBounds = bounds },
+            modifier = Modifier.fillMaxSize(),
         )
 
-        if (showTour) {
+        if (showGuide) {
             GuideKit(
                 steps = listOf(
                     GuideKitStep(
-                        targetBounds = targets["primary"],
+                        targetBounds = targetBounds,
                         title = "Create your first item",
                         description = "Tap here to start a new workflow.",
                     ),
                 ),
-                onSkipped = { showTour = false },
-                onFinished = { showTour = false },
+                // Replace with your persistence update if needed.
+                onSkipped = { showGuide = false },
+                onFinished = { showGuide = false },
+                modifier = Modifier.fillMaxSize(),
             )
         }
     }
