@@ -2,6 +2,8 @@ package io.github.tharukack.guidekit
 
 import androidx.compose.ui.geometry.Rect
 
+internal fun Int.toGuideKitPx(): Float = coerceAtLeast(0).toFloat()
+
 class GuideKitController(
     stepCount: Int,
     initialStepIndex: Int = 0,
@@ -99,7 +101,7 @@ internal fun resolveGuideKitStep(
         highlightBounds = resolveGuideKitHighlightBounds(
             targetBounds = step.targetBounds,
             enabled = targetHighlight.enabled,
-            paddingPx = targetHighlight.paddingPx,
+            paddingPx = targetHighlight.padding.toGuideKitPx(),
             shape = targetHighlight.shape,
         ),
     )

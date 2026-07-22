@@ -44,10 +44,11 @@ class GuideKitStepResolutionTest {
                 from = GuideKitAnchor.CenterLeft,
                 to = GuideKitAnchor.CenterRight,
                 minVisibleDistance = 64.dp,
+                lineStyle = GuideKitArrowLineStyle.DashDot,
             ),
             targetHighlight = GuideKitTargetHighlightStyle(
                 shape = GuideKitTargetHighlightShape.Circle,
-                paddingPx = 16f,
+                padding = 16,
             ),
             instructionBox = GuideKitInstructionBoxStyle(
                 fillMaxWidth = false,
@@ -65,8 +66,9 @@ class GuideKitStepResolutionTest {
         assertEquals(GuideKitAnchor.CenterLeft, resolved.arrowConfig.from)
         assertEquals(GuideKitAnchor.CenterRight, resolved.arrowConfig.to)
         assertEquals(64.dp, resolved.arrowConfig.minVisibleDistance)
+        assertEquals(GuideKitArrowLineStyle.DashDot, resolved.arrowConfig.lineStyle)
         assertEquals(GuideKitTargetHighlightShape.Circle, resolved.targetHighlight.shape)
-        assertEquals(16f, resolved.targetHighlight.paddingPx)
+        assertEquals(16, resolved.targetHighlight.padding)
         assertFalse(resolved.instructionBox.fillMaxWidth)
         assertEquals(Rect(4f, -16f, 136f, 116f), resolved.highlightBounds)
     }
@@ -83,7 +85,7 @@ class GuideKitStepResolutionTest {
             arrowConfig = GuideKitArrowConfig(from = GuideKitAnchor.BottomCenter),
             targetHighlight = GuideKitTargetHighlightStyle(
                 shape = GuideKitTargetHighlightShape.Circle,
-                paddingPx = 0f,
+                padding = 0,
             ),
             instructionBox = GuideKitInstructionBoxStyle(fillMaxWidth = false),
         )
@@ -174,7 +176,7 @@ class GuideKitStepResolutionTest {
                 steps = listOf(
                     guideStep(
                         targetBounds = Rect(0f, 100f, 100f, 200f),
-                        targetHighlight = GuideKitTargetHighlightStyle(paddingPx = 0f),
+                        targetHighlight = GuideKitTargetHighlightStyle(padding = 0),
                     ),
                 ),
                 requestedStepIndex = 0,

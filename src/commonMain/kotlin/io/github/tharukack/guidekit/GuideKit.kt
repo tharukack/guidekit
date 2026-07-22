@@ -89,28 +89,31 @@ data class GuideKitArrowConfig(
     val to: GuideKitAnchor = GuideKitAnchor.BottomCenter,
     val curveSeed: Int = 0,
     val minVisibleDistance: Dp = 40.dp,
-    val lineStyle: GuideKitArrowLineStyle = GuideKitArrowLineStyle.Dashed,
-    val dashIntervalsPx: FloatArray = floatArrayOf(20f, 15f),
-    val dashPhasePx: Float = 0f,
+    val lineStyle: GuideKitArrowLineStyle = GuideKitArrowLineStyle.SpacedDash,
     val strokes: List<GuideKitArrowStroke> = listOf(
-        GuideKitArrowStroke(widthPx = 9f, color = Color.Black.copy(alpha = 0.24f)),
-        GuideKitArrowStroke(widthPx = 5.5f, color = null, alpha = 0.95f),
-        GuideKitArrowStroke(widthPx = 1.7f, color = Color.White.copy(alpha = 0.62f)),
+        GuideKitArrowStroke(width = 9, color = Color.Black.copy(alpha = 0.24f)),
+        GuideKitArrowStroke(width = 6, color = null, alpha = 0.95f),
+        GuideKitArrowStroke(width = 2, color = Color.White.copy(alpha = 0.62f)),
     ),
     val strokeCap: StrokeCap = StrokeCap.Round,
     val arrowHead: GuideKitArrowHead = GuideKitArrowHead.TargetSide,
-    val arrowHeadLengthPx: Float = 38f,
-    val arrowHeadAngleDegrees: Float = 30f,
+    val arrowHeadLength: Int = 38,
+    val arrowHeadAngleDegrees: Int = 30,
     val arrowHeadStrokes: List<GuideKitArrowStroke> = listOf(
-        GuideKitArrowStroke(widthPx = 9f, color = Color.Black.copy(alpha = 0.22f)),
-        GuideKitArrowStroke(widthPx = 5.5f, color = null, alpha = 0.96f),
-        GuideKitArrowStroke(widthPx = 1.6f, color = Color.White.copy(alpha = 0.55f)),
+        GuideKitArrowStroke(width = 9, color = Color.Black.copy(alpha = 0.22f)),
+        GuideKitArrowStroke(width = 6, color = null, alpha = 0.96f),
+        GuideKitArrowStroke(width = 2, color = Color.White.copy(alpha = 0.55f)),
     ),
 )
 
 enum class GuideKitArrowLineStyle {
     Solid,
-    Dashed,
+    SpacedDash,
+    Dotted,
+    ShortDash,
+    MediumDash,
+    LongDash,
+    DashDot,
 }
 
 enum class GuideKitArrowHead {
@@ -121,7 +124,7 @@ enum class GuideKitArrowHead {
 }
 
 data class GuideKitArrowStroke(
-    val widthPx: Float,
+    val width: Int,
     val color: Color? = null,
     val alpha: Float = 1f,
 )
@@ -131,7 +134,6 @@ data class GuideKitStep(
     val title: String,
     val description: String,
     val primaryButtonText: String? = null,
-    val descriptionHighlight: String? = null,
     val descriptionHighlights: List<String> = emptyList(),
     val instructionBottomPadding: Dp = 104.dp,
     val arrowConfig: GuideKitArrowConfig? = null,
@@ -166,19 +168,19 @@ data class GuideKitTargetHighlightStyle(
     val enabled: Boolean = true,
     val shape: GuideKitTargetHighlightShape = GuideKitTargetHighlightShape.RoundedRect,
     val cutoutEnabled: Boolean = true,
-    val paddingPx: Float = 10f,
+    val padding: Int = 10,
     val cornerRadius: Dp = 28.dp,
     val glowStrokes: List<GuideKitTargetHighlightStroke> = listOf(
-        GuideKitTargetHighlightStroke(widthPx = 30f, alpha = 0.11f),
-        GuideKitTargetHighlightStroke(widthPx = 22f, alpha = 0.18f),
-        GuideKitTargetHighlightStroke(widthPx = 14f, alpha = 0.30f),
-        GuideKitTargetHighlightStroke(widthPx = 8f, alpha = 0.45f),
+        GuideKitTargetHighlightStroke(width = 30, alpha = 0.11f),
+        GuideKitTargetHighlightStroke(width = 22, alpha = 0.18f),
+        GuideKitTargetHighlightStroke(width = 14, alpha = 0.30f),
+        GuideKitTargetHighlightStroke(width = 8, alpha = 0.45f),
     ),
     val borderColor: Color? = null,
-    val borderWidthPx: Float = 2.5f,
+    val borderWidth: Int = 3,
     val innerBorderColor: Color = Color.White.copy(alpha = 0.7f),
-    val innerBorderWidthPx: Float = 1.2f,
-    val innerBorderInsetPx: Float = 2f,
+    val innerBorderWidth: Int = 1,
+    val innerBorderInset: Int = 2,
 )
 
 enum class GuideKitTargetHighlightShape {
@@ -187,7 +189,7 @@ enum class GuideKitTargetHighlightShape {
 }
 
 data class GuideKitTargetHighlightStroke(
-    val widthPx: Float,
+    val width: Int,
     val alpha: Float,
     val color: Color? = null,
 )
@@ -302,16 +304,10 @@ fun GuideKit(
     )
     val highlightedDescription = remember(
         currentStep.description,
-        currentStep.descriptionHighlight,
         currentStep.descriptionHighlights,
     ) {
         buildAnnotatedString {
-            val highlights = if (currentStep.descriptionHighlights.isNotEmpty()) {
-                currentStep.descriptionHighlights
-            } else {
-                listOfNotNull(currentStep.descriptionHighlight)
-            }
-            val highlightRanges = highlights
+            val highlightRanges = currentStep.descriptionHighlights
                 .mapNotNull { highlight ->
                     val start = currentStep.description.indexOf(highlight)
                     if (start >= 0) start until (start + highlight.length) else null
@@ -416,7 +412,7 @@ fun GuideKit(
                     }
                 }
                 targetHighlightStyle.glowStrokes.forEach { stroke ->
-                    val strokeStyle = Stroke(width = stroke.widthPx)
+                    val strokeStyle = Stroke(width = stroke.width.toGuideKitPx())
                     val strokeColor = (stroke.color ?: accentColor).copy(alpha = stroke.alpha)
                     when (targetHighlightStyle.shape) {
                         GuideKitTargetHighlightShape.RoundedRect -> {
@@ -439,8 +435,8 @@ fun GuideKit(
                         }
                     }
                 }
-                if (targetHighlightStyle.borderWidthPx > 0f) {
-                    val borderStyle = Stroke(width = targetHighlightStyle.borderWidthPx)
+                if (targetHighlightStyle.borderWidth > 0) {
+                    val borderStyle = Stroke(width = targetHighlightStyle.borderWidth.toGuideKitPx())
                     val borderColor = targetHighlightStyle.borderColor ?: accentColor
                     when (targetHighlightStyle.shape) {
                         GuideKitTargetHighlightShape.RoundedRect -> {
@@ -463,9 +459,9 @@ fun GuideKit(
                         }
                     }
                 }
-                if (targetHighlightStyle.innerBorderWidthPx > 0f) {
-                    val inset = targetHighlightStyle.innerBorderInsetPx.coerceAtLeast(0f)
-                    val innerBorderStyle = Stroke(width = targetHighlightStyle.innerBorderWidthPx)
+                if (targetHighlightStyle.innerBorderWidth > 0) {
+                    val inset = targetHighlightStyle.innerBorderInset.toGuideKitPx()
+                    val innerBorderStyle = Stroke(width = targetHighlightStyle.innerBorderWidth.toGuideKitPx())
                     when (targetHighlightStyle.shape) {
                         GuideKitTargetHighlightShape.RoundedRect -> {
                             drawRoundRect(
@@ -768,16 +764,8 @@ private fun androidx.compose.ui.graphics.drawscope.DrawScope.drawGuideKitArrow(
     val bodySecondControl = bodyEnd
         .minusScaled(endDirection, bodyControlDistance)
         .minusScaled(bendDirection, bendAmount * 0.72f)
-    val pathEffect = when (config.lineStyle) {
-        GuideKitArrowLineStyle.Solid -> null
-        GuideKitArrowLineStyle.Dashed -> config.dashIntervalsPx
-            .takeIf { it.isNotEmpty() }
-            ?.let { intervals ->
-                PathEffect.dashPathEffect(
-                    intervals = intervals,
-                    phase = config.dashPhasePx,
-                )
-            }
+    val pathEffect = config.lineStyle.dashIntervalsPx()?.let { intervals ->
+        PathEffect.dashPathEffect(intervals = intervals)
     }
     val path = Path().apply {
         moveTo(bodyStart.x, bodyStart.y)
@@ -796,7 +784,7 @@ private fun androidx.compose.ui.graphics.drawscope.DrawScope.drawGuideKitArrow(
             path = path,
             color = stroke.resolvedColor(accentColor = color),
             style = Stroke(
-                width = stroke.widthPx,
+                width = stroke.width.toGuideKitPx(),
                 cap = config.strokeCap,
                 pathEffect = pathEffect,
             ),
@@ -819,6 +807,16 @@ private fun androidx.compose.ui.graphics.drawscope.DrawScope.drawGuideKitArrow(
             config = config,
         )
     }
+}
+
+private fun GuideKitArrowLineStyle.dashIntervalsPx(): FloatArray? = when (this) {
+    GuideKitArrowLineStyle.Solid -> null
+    GuideKitArrowLineStyle.SpacedDash -> floatArrayOf(20f, 15f)
+    GuideKitArrowLineStyle.Dotted -> floatArrayOf(1f, 10f)
+    GuideKitArrowLineStyle.ShortDash -> floatArrayOf(8f, 8f)
+    GuideKitArrowLineStyle.MediumDash -> floatArrayOf(16f, 12f)
+    GuideKitArrowLineStyle.LongDash -> floatArrayOf(32f, 18f)
+    GuideKitArrowLineStyle.DashDot -> floatArrayOf(24f, 10f, 1f, 10f)
 }
 
 private fun GuideKitAnchor.pointOn(
@@ -880,8 +878,8 @@ private fun GuideKitArrowConfig.arrowHeadNeckDistance(distance: Float): Float {
     if (arrowHead == GuideKitArrowHead.None) return 0f
 
     val wingAngle = arrowHeadAngleDegrees.toRadians()
-    val projectedWingLength = arrowHeadLengthPx * cos(wingAngle)
-    val widestLineStroke = strokes.maxOfOrNull { it.widthPx } ?: 0f
+    val projectedWingLength = arrowHeadLength.toGuideKitPx() * cos(wingAngle)
+    val widestLineStroke = strokes.maxOfOrNull { it.width }?.toGuideKitPx() ?: 0f
     val naturalNeckDistance = projectedWingLength + (widestLineStroke * 0.35f)
     return naturalNeckDistance.coerceAtMost(distance * 0.36f)
 }
@@ -927,7 +925,7 @@ private fun androidx.compose.ui.graphics.drawscope.DrawScope.drawArrowHead(
 ) {
     val angle = atan2(tip.y - previousPoint.y, tip.x - previousPoint.x)
     val wingAngle = config.arrowHeadAngleDegrees.toRadians()
-    val wingLength = config.arrowHeadLengthPx
+    val wingLength = config.arrowHeadLength.toGuideKitPx()
     val left = Offset(
         x = tip.x - wingLength * cos(angle - wingAngle),
         y = tip.y - wingLength * sin(angle - wingAngle),
@@ -950,7 +948,7 @@ private fun androidx.compose.ui.graphics.drawscope.DrawScope.drawArrowHead(
                 path = wing,
                 color = stroke.resolvedColor(accentColor = accentColor),
                 style = Stroke(
-                    width = stroke.widthPx,
+                    width = stroke.width.toGuideKitPx(),
                     cap = config.strokeCap,
                 ),
             )
@@ -963,4 +961,4 @@ private fun GuideKitArrowStroke.resolvedColor(accentColor: Color): Color =
         if (alpha == 1f) explicitColor else explicitColor.copy(alpha = alpha)
     } ?: accentColor.copy(alpha = alpha)
 
-private fun Float.toRadians(): Float = (this * PI / 180f).toFloat()
+private fun Int.toRadians(): Float = (toFloat() * PI / 180f).toFloat()

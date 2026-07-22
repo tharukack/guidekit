@@ -680,12 +680,12 @@ private fun guideSteps(targetBounds: Map<String, Rect>): List<GuideKitStep> = li
         targetBounds = targetBounds[TargetHero],
         title = "Start with one composable",
         description = "GuideKit draws a coachmark overlay above your existing Compose UI.",
-        descriptionHighlight = "coachmark overlay",
+        descriptionHighlights = listOf("coachmark overlay"),
         targetHighlight = sampleRoundedTargetHighlight(HeroCardCornerRadius),
         arrowConfig = GuideKitArrowConfig(
             from = GuideKitAnchor.TopCenter,
             to = GuideKitAnchor.BottomCenter,
-            lineStyle = GuideKitArrowLineStyle.Dashed,
+            lineStyle = GuideKitArrowLineStyle.SpacedDash,
         ),
     ),
     GuideKitStep(
@@ -696,7 +696,7 @@ private fun guideSteps(targetBounds: Map<String, Rect>): List<GuideKitStep> = li
         targetHighlight = GuideKitTargetHighlightStyle(
             shape = GuideKitTargetHighlightShape.RoundedRect,
             cornerRadius = 34.dp,
-            paddingPx = 12f,
+            padding = 12,
         ),
     ),
     GuideKitStep(
@@ -710,8 +710,8 @@ private fun guideSteps(targetBounds: Map<String, Rect>): List<GuideKitStep> = li
             lineStyle = GuideKitArrowLineStyle.Solid,
             arrowHead = GuideKitArrowHead.BothSides,
             strokes = listOf(
-                GuideKitArrowStroke(widthPx = 10f, color = Color.Black.copy(alpha = 0.20f)),
-                GuideKitArrowStroke(widthPx = 5f, color = Color(0xFFFFC857)),
+                GuideKitArrowStroke(width = 10, color = Color.Black.copy(alpha = 0.20f)),
+                GuideKitArrowStroke(width = 5, color = Color(0xFFFFC857)),
             ),
         ),
         instructionBox = GuideKitInstructionBoxStyle(
@@ -726,11 +726,11 @@ private fun guideSteps(targetBounds: Map<String, Rect>): List<GuideKitStep> = li
         descriptionHighlights = listOf("Circular highlights", "compact controls"),
         targetHighlight = GuideKitTargetHighlightStyle(
             shape = GuideKitTargetHighlightShape.Circle,
-            paddingPx = 18f,
+            padding = 18,
             glowStrokes = listOf(
-                GuideKitTargetHighlightStroke(widthPx = 36f, alpha = 0.10f, color = Color(0xFF4DA3FF)),
-                GuideKitTargetHighlightStroke(widthPx = 18f, alpha = 0.28f, color = Color(0xFF4DA3FF)),
-                GuideKitTargetHighlightStroke(widthPx = 7f, alpha = 0.58f, color = Color(0xFF4DA3FF)),
+                GuideKitTargetHighlightStroke(width = 36, alpha = 0.10f, color = Color(0xFF4DA3FF)),
+                GuideKitTargetHighlightStroke(width = 18, alpha = 0.28f, color = Color(0xFF4DA3FF)),
+                GuideKitTargetHighlightStroke(width = 7, alpha = 0.58f, color = Color(0xFF4DA3FF)),
             ),
         ),
     ),
@@ -768,7 +768,7 @@ private fun studioGuideSteps(targetBounds: Map<String, Rect>): List<GuideKitStep
         targetBounds = targetBounds[StudioTimeline],
         title = "Point at wide sections",
         description = "Instruction cards can be narrower than the target while the highlight follows the full section.",
-        descriptionHighlight = "highlight follows the full section",
+        descriptionHighlights = listOf("highlight follows the full section"),
         targetHighlight = studioRoundedTargetHighlight(30.dp),
         arrowConfig = GuideKitArrowConfig(
             enabled = false
@@ -789,8 +789,7 @@ private fun studioGuideSteps(targetBounds: Map<String, Rect>): List<GuideKitStep
         arrowConfig = GuideKitArrowConfig(
             from = GuideKitAnchor.TopRight,
             to = GuideKitAnchor.TopLeft,
-            lineStyle = GuideKitArrowLineStyle.Dashed,
-            dashIntervalsPx = floatArrayOf(12f, 10f),
+            lineStyle = GuideKitArrowLineStyle.ShortDash,
         ),
     ),
     GuideKitStep(
@@ -803,11 +802,11 @@ private fun studioGuideSteps(targetBounds: Map<String, Rect>): List<GuideKitStep
         ),
         targetHighlight = GuideKitTargetHighlightStyle(
             shape = GuideKitTargetHighlightShape.Circle,
-            paddingPx = 16f,
+            padding = 16,
             glowStrokes = listOf(
-                GuideKitTargetHighlightStroke(widthPx = 34f, alpha = 0.12f, color = Color(0xFFFF6B4A)),
-                GuideKitTargetHighlightStroke(widthPx = 18f, alpha = 0.30f, color = Color(0xFFFF6B4A)),
-                GuideKitTargetHighlightStroke(widthPx = 7f, alpha = 0.60f, color = Color(0xFFFF6B4A)),
+                GuideKitTargetHighlightStroke(width = 34, alpha = 0.12f, color = Color(0xFFFF6B4A)),
+                GuideKitTargetHighlightStroke(width = 18, alpha = 0.30f, color = Color(0xFFFF6B4A)),
+                GuideKitTargetHighlightStroke(width = 7, alpha = 0.60f, color = Color(0xFFFF6B4A)),
             ),
         ),
     ),
@@ -834,7 +833,7 @@ private fun sampleGuideStyle() = GuideKitStyle(
     primaryButtonContentColor = Color(0xFF173B33),
     arrowConfig = GuideKitArrowConfig(
         minVisibleDistance = 28.dp,
-        dashIntervalsPx = floatArrayOf(18f, 12f),
+        lineStyle = GuideKitArrowLineStyle.MediumDash,
         strokeCap = StrokeCap.Round,
     ),
     targetHighlight = sampleRoundedTargetHighlight(30.dp),
@@ -857,12 +856,12 @@ private fun studioGuideStyle() = GuideKitStyle(
     primaryButtonContentColor = Color(0xFF2D130D),
     arrowConfig = GuideKitArrowConfig(
         minVisibleDistance = 26.dp,
-        dashIntervalsPx = floatArrayOf(14f, 10f),
+        lineStyle = GuideKitArrowLineStyle.ShortDash,
         strokeCap = StrokeCap.Round,
         strokes = listOf(
-            GuideKitArrowStroke(widthPx = 9f, color = Color.Black.copy(alpha = 0.22f)),
-            GuideKitArrowStroke(widthPx = 5.2f, color = Color(0xFFFF6B4A)),
-            GuideKitArrowStroke(widthPx = 1.6f, color = Color.White.copy(alpha = 0.54f)),
+            GuideKitArrowStroke(width = 9, color = Color.Black.copy(alpha = 0.22f)),
+            GuideKitArrowStroke(width = 5, color = Color(0xFFFF6B4A)),
+            GuideKitArrowStroke(width = 2, color = Color.White.copy(alpha = 0.54f)),
         ),
     ),
     targetHighlight = studioRoundedTargetHighlight(28.dp),
@@ -883,15 +882,15 @@ private fun studioGuideStyle() = GuideKitStyle(
 private fun sampleRoundedTargetHighlight(cornerRadius: Dp) =
     GuideKitTargetHighlightStyle(
         cornerRadius = cornerRadius,
-        paddingPx = 10f,
-        borderWidthPx = 3f,
+        padding = 10,
+        borderWidth = 3,
     )
 
 private fun studioRoundedTargetHighlight(cornerRadius: Dp) =
     GuideKitTargetHighlightStyle(
         cornerRadius = cornerRadius,
-        paddingPx = 11f,
-        borderWidthPx = 3f,
+        padding = 11,
+        borderWidth = 3,
         borderColor = Color(0xFFFF6B4A),
         innerBorderColor = Color.White.copy(alpha = 0.74f),
     )

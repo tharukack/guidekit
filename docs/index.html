@@ -1,0 +1,579 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#09071a">
+  <meta name="description" content="GuideKit is a Compose Multiplatform library for polished coach marks, spotlight overlays, smart arrows, and product tours on Android and iOS.">
+  <meta property="og:title" content="GuideKit — Beautiful coach marks for Compose Multiplatform">
+  <meta property="og:description" content="Guide users. Highlight what matters. Build polished product tours for Android and iOS with one Compose Multiplatform API.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://tharukack.github.io/guidekit/">
+  <meta property="og:image" content="https://tharukack.github.io/guidekit/assets/guidekit-social-card.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <title>GuideKit — Coach marks for Compose Multiplatform</title>
+  <link rel="preload" href="./assets/guide_kit_logo_horizontal.png" as="image">
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header" data-header>
+    <div class="container nav-shell">
+      <a class="brand" href="#top" aria-label="GuideKit home">
+        <img src="./assets/guide_kit_logo_horizontal.png" alt="GuideKit">
+      </a>
+
+      <button class="nav-toggle" type="button" aria-label="Open navigation" aria-expanded="false" data-nav-toggle>
+        <span></span><span></span><span></span>
+      </button>
+
+      <nav class="site-nav" aria-label="Primary navigation" data-nav>
+        <a href="#installation">Install</a>
+        <a href="#quick-start">Quick start</a>
+        <a href="#customization">Customize</a>
+        <a href="#features">Features</a>
+        <a href="#api">API</a>
+        <a href="#platforms">Platforms</a>
+        <a class="nav-github" href="https://github.com/tharukack/guidekit" target="_blank" rel="noreferrer">GitHub <span aria-hidden="true">↗</span></a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="hero" id="top">
+      <div class="hero-glow hero-glow-one" aria-hidden="true"></div>
+      <div class="hero-glow hero-glow-two" aria-hidden="true"></div>
+      <div class="container hero-grid">
+        <div class="hero-copy reveal">
+          <a class="eyebrow" href="https://central.sonatype.com/artifact/io.github.tharukack/guidekit" target="_blank" rel="noreferrer">
+            <span class="status-dot"></span>
+            Available on Maven Central
+            <span aria-hidden="true">↗</span>
+          </a>
+          <h1>Guide users.<br><span>Highlight what matters.</span></h1>
+          <p class="hero-lede">Beautiful, customizable coach marks and product tours for Compose Multiplatform—designed to feel native, polished, and easy to maintain.</p>
+
+          <div class="hero-actions">
+            <a class="button button-primary" href="#quick-start">Get started <span aria-hidden="true">→</span></a>
+            <a class="button button-secondary" href="#demo"><span class="play" aria-hidden="true">▶</span> Watch the demo</a>
+          </div>
+
+          <div class="install-pill" aria-label="Gradle dependency">
+            <span class="prompt" aria-hidden="true">$</span>
+            <code>implementation("io.github.tharukack:guidekit:0.1.1")</code>
+            <button class="copy-button" type="button" data-copy='implementation("io.github.tharukack:guidekit:0.1.1")' aria-label="Copy Gradle dependency">
+              <span data-copy-label>Copy</span>
+            </button>
+          </div>
+
+          <ul class="hero-proof" aria-label="Supported platforms">
+            <li><span class="proof-mark">✓</span> Android</li>
+            <li><span class="proof-mark">✓</span> iOS</li>
+            <li><span class="proof-mark">✓</span> MIT licensed</li>
+          </ul>
+        </div>
+
+        <div class="hero-visual reveal reveal-delay" aria-label="GuideKit coach mark preview">
+          <div class="orbit orbit-one" aria-hidden="true"></div>
+          <div class="orbit orbit-two" aria-hidden="true"></div>
+          <div class="phone phone-hero">
+            <div class="phone-speaker" aria-hidden="true"></div>
+            <img src="./assets/demo_1.gif" alt="GuideKit highlighting UI elements in a Compose application">
+          </div>
+          <div class="floating-note note-top" aria-hidden="true">
+            <span class="note-step">1</span>
+            <div><strong>Spotlight anything</strong><small>Measured from your real UI</small></div>
+          </div>
+          <div class="floating-note note-bottom" aria-hidden="true">
+            <span class="spark">✦</span>
+            <div><strong>Smart placement</strong><small>Cards, arrows, and auto-scroll</small></div>
+          </div>
+          <div class="code-float" aria-hidden="true"><span>GuideKit</span>(steps)</div>
+        </div>
+      </div>
+
+      <div class="container capability-row reveal" aria-label="GuideKit capabilities">
+        <div><span class="cap-icon">⌗</span><p><strong>Spotlight</strong><small>Any UI element</small></p></div>
+        <div><span class="cap-icon">↝</span><p><strong>Smart arrows</strong><small>Curved or direct</small></p></div>
+        <div><span class="cap-icon">☷</span><p><strong>Step through</strong><small>Complete product tours</small></p></div>
+        <div><span class="cap-icon">◫</span><p><strong>Cross-platform</strong><small>Android &amp; iOS</small></p></div>
+      </div>
+    </section>
+
+    <section class="section demo-section" id="demo">
+      <div class="container">
+        <div class="section-heading centered reveal">
+          <p class="section-kicker">See it in motion</p>
+          <h2>Guidance that feels part of your app.</h2>
+          <p>GuideKit renders above your existing Compose UI. Your screens stay intact while targets, arrows, and instruction cards work together.</p>
+        </div>
+
+        <div class="demo-stage reveal">
+          <div class="demo-copy">
+            <span class="demo-index">01</span>
+            <h3>Direct attention without interrupting the experience.</h3>
+            <p>Highlight a card, a button, an avatar, or any measured composable. GuideKit handles the overlay while your app keeps control of content and completion.</p>
+            <div class="demo-tags">
+              <span>Rounded targets</span>
+              <span>Curved arrows</span>
+              <span>Auto-scroll</span>
+            </div>
+          </div>
+
+          <div class="device-gallery">
+            <div class="phone phone-demo phone-back">
+              <div class="phone-speaker" aria-hidden="true"></div>
+              <img src="./assets/demo_1_2.gif" alt="GuideKit demo with circular highlights and alternate styling" loading="lazy">
+            </div>
+            <div class="phone phone-demo phone-front">
+              <div class="phone-speaker" aria-hidden="true"></div>
+              <img src="./assets/demo_1.gif" alt="GuideKit demo with coach marks and automatic scrolling" loading="lazy">
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section features-section" id="features">
+      <div class="container">
+        <div class="section-heading reveal">
+          <p class="section-kicker">Everything you need</p>
+          <h2>A small API with a polished result.</h2>
+          <p>Start with the defaults, then tune individual steps when your product experience needs more precision.</p>
+        </div>
+
+        <div class="feature-grid">
+          <article class="feature-card feature-card-wide reveal">
+            <div class="feature-copy">
+              <span class="feature-number">01</span>
+              <h3>Smart target highlighting</h3>
+              <p>Measure any composable and match its visual shape with rounded or circular spotlight cutouts.</p>
+            </div>
+            <div class="spotlight-art" aria-hidden="true">
+              <div class="mock-list"><i></i><i></i><i></i></div>
+              <div class="spotlight-ring"><span>Target</span></div>
+            </div>
+          </article>
+
+          <article class="feature-card reveal">
+            <span class="feature-number">02</span>
+            <div class="arrow-art" aria-hidden="true"><span>•</span><i></i><b>➜</b></div>
+            <h3>Configurable arrows</h3>
+            <p>Choose card and target anchors, line styles, curve seeds, arrowheads, and colors per step.</p>
+          </article>
+
+          <article class="feature-card reveal">
+            <span class="feature-number">03</span>
+            <div class="steps-art" aria-hidden="true"><i class="active">1</i><span></span><i>2</i><span></span><i>3</i></div>
+            <h3>Tour navigation included</h3>
+            <p>Next, previous, skip, finish, progress, and step changes are managed for you.</p>
+          </article>
+
+          <article class="feature-card reveal">
+            <span class="feature-number">04</span>
+            <div class="scroll-art" aria-hidden="true"><i></i><i></i><i></i><b>↓</b></div>
+            <h3>Automatic scrolling</h3>
+            <p>Keep off-screen targets visible and clear of the instruction card with a simple scroll callback.</p>
+          </article>
+
+          <article class="feature-card feature-card-wide feature-dark reveal">
+            <div class="feature-copy">
+              <span class="feature-number">05</span>
+              <h3>Defaults that look finished.<br>Controls that stay flexible.</h3>
+              <p>Customize the whole tour or override only the step that needs a different arrow, highlight, card, label, or scroll behavior.</p>
+            </div>
+            <div class="token-stack" aria-hidden="true">
+              <span><i style="--token:#7c3cff"></i> Overlay style</span>
+              <span><i style="--token:#ffbf43"></i> Highlight color</span>
+              <span><i style="--token:#36d6a5"></i> Instruction card</span>
+            </div>
+          </article>
+        </div>
+        <div class="feature-checklist reveal" aria-label="Additional GuideKit features">
+          <div><span>✦</span><p><strong>Spotlight overlay</strong><small>Dims the screen while preserving a clear target cutout.</small></p></div>
+          <div><span>Aa</span><p><strong>Highlighted phrases</strong><small>Emphasize one or many exact phrases in each description.</small></p></div>
+          <div><span>▣</span><p><strong>Instruction cards</strong><small>Style placement, sizing, shape, surface, border, and shadow.</small></p></div>
+          <div><span>⇄</span><p><strong>Lifecycle callbacks</strong><small>Observe steps and persist skipped or completed tours.</small></p></div>
+          <div><span>◇</span><p><strong>Compose Multiplatform</strong><small>Use the same Kotlin API on Android and iOS.</small></p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section installation-section" id="installation">
+      <div class="container docs-narrow">
+        <div class="section-heading reveal">
+          <p class="section-kicker">Installation</p>
+          <h2>Add one dependency to shared Compose UI.</h2>
+          <p>GuideKit is published on Maven Central. Add it to the source set that renders your tours.</p>
+        </div>
+        <div class="install-options reveal">
+          <article class="install-option">
+            <span class="install-label">Compose Multiplatform · commonMain</span>
+            <pre id="install-kmp"><code>kotlin {
+    sourceSets {
+        commonMain.dependencies {
+            implementation("io.github.tharukack:guidekit:0.1.1")
+        }
+    }
+}</code></pre>
+            <button class="copy-button copy-button-light" type="button" data-copy-target="#install-kmp"><span data-copy-label>Copy</span></button>
+          </article>
+          <article class="install-option">
+            <span class="install-label">Compose module</span>
+            <pre id="install-simple"><code>implementation("io.github.tharukack:guidekit:0.1.1")</code></pre>
+            <button class="copy-button copy-button-light" type="button" data-copy-target="#install-simple"><span data-copy-label>Copy</span></button>
+          </article>
+        </div>
+        <p class="version-note reveal"><strong>Version note:</strong> the version in your app selects the published GuideKit release. Increase the library version before publishing a new release; users only receive that new code after updating their dependency.</p>
+      </div>
+    </section>
+
+    <section class="section quick-section" id="quick-start">
+      <div class="container">
+        <div class="section-heading centered reveal">
+          <p class="section-kicker">Quick start</p>
+          <h2>Your first guide in three clear steps.</h2>
+          <p>GuideKit belongs beside the content in the main composable that occupies the full screen. A Scaffold is optional and does not change the setup.</p>
+        </div>
+
+        <div class="quick-grid">
+          <article class="guide-step reveal">
+            <div class="guide-step-copy"><span class="step-badge">01</span><div><h3>Keep state in the parent screen</h3><p>Own each target's measured bounds at the full-screen level. This example uses saveable visibility; use DataStore, a database, or any persistence you prefer to stop completed guides appearing again.</p></div></div>
+            <div class="code-window compact">
+              <div class="code-toolbar"><span>MainScreen.kt</span><button class="copy-button code-copy" type="button" data-copy-target="#state-code"><span data-copy-label>Copy</span></button></div>
+              <pre id="state-code"><code>var targetBounds by remember { mutableStateOf&lt;Rect?&gt;(null) }
+var showGuide by rememberSaveable { mutableStateOf(true) }</code></pre>
+            </div>
+          </article>
+
+          <article class="guide-step reveal">
+            <div class="guide-step-copy"><span class="step-badge">02</span><div><h3>Measure the real target</h3><p>Pass a bounds callback into the nested composable. Attach <code>onGloballyPositioned</code> to the exact component being highlighted, then send its <code>boundsInRoot()</code> value back to the parent.</p></div></div>
+            <div class="code-window compact">
+              <div class="code-toolbar"><span>MainScreenContent.kt</span><button class="copy-button code-copy" type="button" data-copy-target="#measure-code"><span data-copy-label>Copy</span></button></div>
+              <pre id="measure-code"><code>@Composable
+fun MainScreenContent(
+    onTargetBoundsChanged: (Rect?) -&gt; Unit,
+) {
+    Button(
+        onClick = { /* action */ },
+        modifier = Modifier.onGloballyPositioned { coordinates -&gt;
+            onTargetBoundsChanged(coordinates.boundsInRoot())
+        },
+    ) { Text("Create item") }
+}</code></pre>
+            </div>
+          </article>
+
+          <article class="guide-step reveal">
+            <div class="guide-step-copy"><span class="step-badge">03</span><div><h3>Render GuideKit after the content</h3><p>Pass the callback into the child and render GuideKit after the screen content in the same full-size parent. This ensures the overlay draws above the entire screen.</p></div></div>
+            <div class="code-window compact">
+              <div class="code-toolbar"><span>MainScreen.kt</span><button class="copy-button code-copy" type="button" data-copy-target="#render-code"><span data-copy-label>Copy</span></button></div>
+              <pre id="render-code"><code>@Composable
+fun MainScreen() {
+    var targetBounds by remember { mutableStateOf&lt;Rect?&gt;(null) }
+    var showGuide by rememberSaveable { mutableStateOf(true) }
+
+    Box(Modifier.fillMaxSize()) {
+        MainScreenContent(
+            onTargetBoundsChanged = { targetBounds = it },
+        )
+
+        if (showGuide) {
+            GuideKit(
+                steps = listOf(
+                    GuideKitStep(
+                        targetBounds = targetBounds,
+                        title = "Create your first item",
+                        description = "Tap here to start a new workflow.",
+                        arrowConfig = GuideKitArrowConfig(
+                            from = GuideKitAnchor.TopRight,
+                            to = GuideKitAnchor.BottomCenter,
+                        ),
+                    ),
+                ),
+                onSkipped = { showGuide = false },
+                onFinished = { showGuide = false },
+                modifier = Modifier.fillMaxSize(),
+            )
+        }
+    }
+}</code></pre>
+            </div>
+          </article>
+        </div>
+
+        <div class="callout reveal"><span aria-hidden="true">↑</span><p><strong>Nested target?</strong> Keep it where it belongs. Send <code>targetBounds</code> from that component to the full-screen parent through a callback such as <code>onTargetBoundsChanged</code>.</p></div>
+      </div>
+    </section>
+
+    <section class="section customization-section" id="customization">
+      <div class="container docs-layout">
+        <aside class="catalogue reveal" aria-label="Customization catalogue">
+          <span>Customization catalogue</span>
+          <a href="#multiple-steps">Multiple steps</a>
+          <a href="#global-styles">Global &amp; step styles</a>
+          <a href="#step-text">Step text</a>
+          <a href="#arrows">Arrows</a>
+          <a href="#highlights">Target highlights</a>
+          <a href="#instruction-cards">Instruction cards</a>
+          <a href="#auto-scroll">Automatic scrolling</a>
+          <a href="#callbacks">Navigation &amp; callbacks</a>
+        </aside>
+
+        <div class="docs-content">
+          <div class="section-heading reveal">
+            <p class="section-kicker">Customization</p>
+            <h2>Start global. Get precise per step.</h2>
+            <p>Set a consistent tour style once, then replace the arrow, highlight, instruction card, text, or scroll behavior only where a step needs it.</p>
+          </div>
+
+          <article class="doc-block reveal" id="multiple-steps">
+            <span class="doc-index">01</span><h3>Add multiple steps</h3>
+            <p>Add one <code>GuideKitStep</code> per target. The list order is the tour order; GuideKit handles next, previous, and finish navigation.</p>
+            <div class="code-window light"><div class="code-toolbar"><span>ThreeStepGuide.kt</span><button class="copy-button code-copy" type="button" data-copy-target="#steps-code"><span data-copy-label>Copy</span></button></div><pre id="steps-code"><code>val guideSteps = listOf(
+    GuideKitStep(
+        targetBounds = createButtonBounds,
+        title = "Create your first item",
+        description = "Tap here to start a new workflow.",
+        arrowConfig = GuideKitArrowConfig(
+            from = GuideKitAnchor.TopRight,
+            to = GuideKitAnchor.BottomCenter,
+        ),
+    ),
+    GuideKitStep(
+        targetBounds = activityCardBounds,
+        title = "Track your progress",
+        description = "Your latest activity appears here.",
+        arrowConfig = GuideKitArrowConfig(
+            from = GuideKitAnchor.BottomLeft,
+            to = GuideKitAnchor.TopCenter,
+        ),
+    ),
+    GuideKitStep(
+        targetBounds = profileButtonBounds,
+        title = "Make it yours",
+        description = "Customize your experience here.",
+        arrowConfig = GuideKitArrowConfig(
+            from = GuideKitAnchor.TopRight,
+            to = GuideKitAnchor.CenterLeft,
+        ),
+    ),
+)</code></pre></div>
+          </article>
+
+          <article class="doc-block reveal" id="global-styles">
+            <span class="doc-index">02</span><h3>Global and step-specific styles</h3>
+            <p><code>GuideKitStyle</code> supplies tour-wide defaults. A non-null step configuration replaces that complete global configuration; its omitted properties use library defaults rather than merging field by field.</p>
+            <div class="split-code">
+              <div class="mini-code"><strong>Global</strong><pre><code>val style = GuideKitStyle(
+    accentColor = Color(0xFF7C4DFF),
+    overlayColor = Color.Black.copy(alpha = 0.72f),
+    arrowConfig = GuideKitArrowConfig(
+        lineStyle = GuideKitArrowLineStyle.SpacedDash,
+    ),
+    targetHighlight = GuideKitTargetHighlightStyle(
+        shape = GuideKitTargetHighlightShape.RoundedRect,
+    ),
+)</code></pre></div>
+              <div class="mini-code"><strong>One step</strong><pre><code>GuideKitStep(
+    targetBounds = avatarBounds,
+    title = "Your profile",
+    description = "Manage it here.",
+    arrowConfig = GuideKitArrowConfig(
+        lineStyle = GuideKitArrowLineStyle.Solid,
+    ),
+    targetHighlight = GuideKitTargetHighlightStyle(
+        shape = GuideKitTargetHighlightShape.Circle,
+    ),
+)</code></pre></div>
+            </div>
+          </article>
+
+          <article class="doc-block reveal" id="step-text">
+            <span class="doc-index">03</span><h3>Step text</h3>
+            <p>Highlight one or many exact phrases with a single API. If no button label is supplied, GuideKit uses <strong>Next</strong> and changes the final step to <strong>Got it</strong>.</p>
+            <div class="code-window light"><pre><code>GuideKitStep(
+    targetBounds = activityBounds,
+    title = "Never miss an update",
+    description = "Important activity and urgent alerts appear here.",
+    descriptionHighlights = listOf("Important activity", "urgent alerts"),
+    primaryButtonText = "Continue",
+)</code></pre></div>
+          </article>
+
+          <article class="doc-block reveal" id="arrows">
+            <span class="doc-index">04</span><h3>Arrows</h3>
+            <p><code>from</code> is the connection point on the instruction card; <code>to</code> is the connection point on the highlighted target. Choose any of nine anchors, deterministic curves, layered strokes, arrowheads, and named line styles.</p>
+            <div class="anchor-map" aria-label="Available arrow anchors"><span>TopLeft</span><span>TopCenter</span><span>TopRight</span><span>CenterLeft</span><span>Center</span><span>CenterRight</span><span>BottomLeft</span><span>BottomCenter</span><span>BottomRight</span></div>
+            <div class="line-catalogue" aria-label="Arrow line styles">
+              <div><i class="line-solid"></i><span>Solid</span></div><div><i class="line-spaced"></i><span>SpacedDash</span></div><div><i class="line-dotted"></i><span>Dotted</span></div><div><i class="line-short"></i><span>ShortDash</span></div><div><i class="line-medium"></i><span>MediumDash</span></div><div><i class="line-long"></i><span>LongDash</span></div><div><i class="line-dashdot"></i><span>DashDot</span></div>
+            </div>
+            <div class="code-window light"><pre><code>GuideKitArrowConfig(
+    from = GuideKitAnchor.TopRight,
+    to = GuideKitAnchor.CenterLeft,
+    curveSeed = 3,
+    lineStyle = GuideKitArrowLineStyle.MediumDash,
+    arrowHead = GuideKitArrowHead.BothSides,
+    arrowHeadLength = 38,
+    arrowHeadAngleDegrees = 30,
+    strokes = listOf(
+        GuideKitArrowStroke(width = 9, color = Color.Black.copy(alpha = 0.22f)),
+        GuideKitArrowStroke(width = 5, color = Color(0xFF7C4DFF)),
+    ),
+)</code></pre></div>
+          </article>
+
+          <article class="doc-block reveal" id="highlights">
+            <span class="doc-index">05</span><h3>Target highlights</h3>
+            <p>Use a rounded rectangle for cards and controls or a circle for avatars, icons, and floating action buttons. Customize cutout, integer padding and stroke widths, corner radius, layered glow, and borders.</p>
+            <div class="style-preview-grid">
+              <div class="target-preview rounded"><span>RoundedRect</span></div><div class="target-preview circle"><span>Circle</span></div>
+            </div>
+            <div class="code-window light"><pre><code>GuideKitTargetHighlightStyle(
+    shape = GuideKitTargetHighlightShape.Circle,
+    padding = 16,
+    glowStrokes = listOf(
+        GuideKitTargetHighlightStroke(width = 30, alpha = 0.14f),
+        GuideKitTargetHighlightStroke(width = 8, alpha = 0.55f),
+    ),
+    borderWidth = 3,
+)</code></pre></div>
+          </article>
+
+          <article class="doc-block reveal" id="instruction-cards">
+            <span class="doc-index">06</span><h3>Instruction cards</h3>
+            <p>Control alignment, outer and inner padding, constraints, shape, colors, border, Material elevation, and the optional custom shadow globally or per step.</p>
+            <div class="code-window light"><pre><code>GuideKitInstructionBoxStyle(
+    alignment = Alignment.BottomCenter,
+    outerPadding = PaddingValues(20.dp),
+    contentPadding = PaddingValues(horizontal = 24.dp, vertical = 20.dp),
+    fillMaxWidth = false,
+    maxWidth = 420.dp,
+    shape = RoundedCornerShape(28.dp),
+    containerColor = Color(0xFF17132B),
+    contentColor = Color.White,
+    shadow = GuideKitInstructionBoxShadow(elevation = 32.dp),
+)</code></pre></div>
+          </article>
+
+          <article class="doc-block reveal" id="auto-scroll">
+            <span class="doc-index">07</span><h3>Automatic scrolling</h3>
+            <p>Auto-scroll is enabled per step by default. Supply <code>onScrollBy</code> so GuideKit can ask the host scroll state to keep the target visible and clear of the instruction card.</p>
+            <div class="code-window light"><pre><code>GuideKit(
+    steps = guideSteps,
+    onScrollBy = { deltaPx -&gt; scrollState.animateScrollBy(deltaPx) },
+    onFinished = { showGuide = false },
+)
+
+// Fixed target, such as a floating action button:
+GuideKitAutoScrollConfig(enabled = false)</code></pre></div>
+          </article>
+
+          <article class="doc-block reveal" id="callbacks">
+            <span class="doc-index">08</span><h3>Navigation and callbacks</h3>
+            <p>Choose the starting step, toggle progress, observe step changes, and persist skipped or completed tours. Swiping the card right returns to the previous step.</p>
+            <div class="code-window light"><pre><code>GuideKit(
+    steps = guideSteps,
+    initialStepIndex = 0,
+    showStepIndicator = true,
+    onStepChanged = { index -&gt; analytics.track("guide_step_${index + 1}") },
+    onSkipped = {
+        showGuide = false
+        onboardingStore.markGuideCompleted()
+    },
+    onFinished = {
+        showGuide = false
+        onboardingStore.markGuideCompleted()
+    },
+)</code></pre></div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section api-section" id="api">
+      <div class="container">
+        <div class="section-heading centered reveal"><p class="section-kicker">API reference</p><h2>Every public option and its default.</h2><p>A compact reference for the current 0.1.1 API. Open only the group you need.</p></div>
+        <div class="api-groups reveal">
+          <details open><summary><span><code>GuideKit</code><small>Overlay, navigation, and lifecycle</small></span><b>9 options</b></summary><div class="table-scroll"><table><thead><tr><th>Option</th><th>Default</th><th>Purpose</th></tr></thead><tbody>
+            <tr><td><code>steps</code></td><td>Required</td><td>Ordered guide steps; an empty list renders nothing.</td></tr><tr><td><code>modifier</code></td><td><code>Modifier</code></td><td>Use <code>fillMaxSize()</code> at screen level.</td></tr><tr><td><code>initialStepIndex</code></td><td><code>0</code></td><td>Starting step; safely clamped.</td></tr><tr><td><code>showStepIndicator</code></td><td><code>true</code></td><td>Shows progress dots.</td></tr><tr><td><code>style</code></td><td><code>GuideKitStyle()</code></td><td>Global visual defaults.</td></tr><tr><td><code>onStepChanged</code></td><td><code>{}</code></td><td>Reports the zero-based active index.</td></tr><tr><td><code>onScrollBy</code></td><td><code>{ 0f }</code></td><td>Delegates scrolling to the host.</td></tr><tr><td><code>onSkipped</code></td><td><code>null</code></td><td>When provided, shows close and handles skip.</td></tr><tr><td><code>onFinished</code></td><td>Required</td><td>Runs after the final primary action.</td></tr>
+          </tbody></table></div></details>
+
+          <details><summary><span><code>GuideKitStep</code><small>Content and per-step overrides</small></span><b>10 options</b></summary><div class="table-scroll"><table><thead><tr><th>Option</th><th>Default</th><th>Purpose</th></tr></thead><tbody>
+            <tr><td><code>targetBounds</code></td><td>Required</td><td>Measured target bounds.</td></tr><tr><td><code>title</code></td><td>Required</td><td>Card title.</td></tr><tr><td><code>description</code></td><td>Required</td><td>Card body.</td></tr><tr><td><code>primaryButtonText</code></td><td><code>null</code> → Next / Got it</td><td>Custom primary label.</td></tr><tr><td><code>descriptionHighlights</code></td><td><code>emptyList()</code></td><td>Exact phrases to emphasize.</td></tr><tr><td><code>instructionBottomPadding</code></td><td><code>104.dp</code></td><td>Default card bottom space.</td></tr><tr><td><code>arrowConfig</code></td><td><code>null</code> → global</td><td>Complete arrow override.</td></tr><tr><td><code>targetHighlight</code></td><td><code>null</code> → global</td><td>Complete highlight override.</td></tr><tr><td><code>instructionBox</code></td><td><code>null</code> → global</td><td>Complete card override.</td></tr><tr><td><code>autoScroll</code></td><td><code>GuideKitAutoScrollConfig()</code></td><td>Step scroll behavior.</td></tr>
+          </tbody></table></div></details>
+
+          <details><summary><span><code>GuideKitStyle</code><small>Global visual defaults</small></span><b>13 options</b></summary><div class="table-scroll"><table><thead><tr><th>Option</th><th>Default</th></tr></thead><tbody>
+            <tr><td><code>accentColor</code></td><td><code>Color(0xFF5ED5B3)</code></td></tr><tr><td><code>overlayColor</code></td><td>Black at <code>0.68f</code></td></tr><tr><td><code>titleColor</code></td><td><code>null</code> → theme onSurface</td></tr><tr><td><code>descriptionColor</code></td><td><code>null</code> → theme onSurfaceVariant</td></tr><tr><td><code>highlightedDescriptionColor</code></td><td><code>null</code> → accent</td></tr><tr><td><code>stepIndicatorActiveColor</code></td><td><code>null</code> → accent</td></tr><tr><td><code>stepIndicatorInactiveColor</code></td><td><code>null</code> → theme outlineVariant</td></tr><tr><td><code>primaryButtonContainerColor</code></td><td><code>null</code> → accent</td></tr><tr><td><code>primaryButtonContentColor</code></td><td><code>Color(0xFF062D25)</code></td></tr><tr><td><code>skipIconTint</code></td><td><code>null</code> → theme onSurfaceVariant</td></tr><tr><td><code>arrowConfig</code></td><td><code>GuideKitArrowConfig()</code></td></tr><tr><td><code>targetHighlight</code></td><td><code>GuideKitTargetHighlightStyle()</code></td></tr><tr><td><code>instructionBox</code></td><td><code>GuideKitInstructionBoxStyle()</code></td></tr>
+          </tbody></table></div></details>
+
+          <details><summary><span><code>GuideKitArrowConfig</code><small>Path, strokes, and arrowhead</small></span><b>13 options</b></summary><div class="table-scroll"><table><thead><tr><th>Option</th><th>Default</th></tr></thead><tbody>
+            <tr><td><code>enabled</code></td><td><code>true</code></td></tr><tr><td><code>from</code></td><td><code>TopCenter</code></td></tr><tr><td><code>to</code></td><td><code>BottomCenter</code></td></tr><tr><td><code>curveSeed</code></td><td><code>0</code></td></tr><tr><td><code>minVisibleDistance</code></td><td><code>40.dp</code></td></tr><tr><td><code>lineStyle</code></td><td><code>SpacedDash</code></td></tr><tr><td><code>strokes</code></td><td>Widths <code>9, 6, 2</code></td></tr><tr><td><code>strokeCap</code></td><td><code>StrokeCap.Round</code></td></tr><tr><td><code>arrowHead</code></td><td><code>TargetSide</code></td></tr><tr><td><code>arrowHeadLength</code></td><td><code>38</code></td></tr><tr><td><code>arrowHeadAngleDegrees</code></td><td><code>30</code></td></tr><tr><td><code>arrowHeadStrokes</code></td><td>Widths <code>9, 6, 2</code></td></tr><tr><td><code>GuideKitArrowStroke.alpha</code></td><td><code>1f</code></td></tr>
+          </tbody></table></div></details>
+
+          <details><summary><span><code>GuideKitTargetHighlightStyle</code><small>Cutout, shape, glow, and borders</small></span><b>11 options</b></summary><div class="table-scroll"><table><thead><tr><th>Option</th><th>Default</th></tr></thead><tbody>
+            <tr><td><code>enabled</code></td><td><code>true</code></td></tr><tr><td><code>shape</code></td><td><code>RoundedRect</code></td></tr><tr><td><code>cutoutEnabled</code></td><td><code>true</code></td></tr><tr><td><code>padding</code></td><td><code>10</code></td></tr><tr><td><code>cornerRadius</code></td><td><code>28.dp</code></td></tr><tr><td><code>glowStrokes</code></td><td>Widths/alpha <code>30/.11, 22/.18, 14/.30, 8/.45</code></td></tr><tr><td><code>borderColor</code></td><td><code>null</code> → accent</td></tr><tr><td><code>borderWidth</code></td><td><code>3</code></td></tr><tr><td><code>innerBorderColor</code></td><td>White at <code>0.7f</code></td></tr><tr><td><code>innerBorderWidth</code></td><td><code>1</code></td></tr><tr><td><code>innerBorderInset</code></td><td><code>2</code></td></tr>
+          </tbody></table></div></details>
+
+          <details><summary><span><code>GuideKitInstructionBoxStyle</code><small>Placement, sizing, surface, and shadow</small></span><b>16 options</b></summary><div class="table-scroll"><table><thead><tr><th>Option</th><th>Default</th></tr></thead><tbody>
+            <tr><td><code>alignment</code></td><td><code>Alignment.BottomCenter</code></td></tr><tr><td><code>outerPadding</code></td><td><code>null</code> → 18.dp sides + step bottom</td></tr><tr><td><code>contentPadding</code></td><td><code>22.dp</code> horizontal, <code>24.dp</code> vertical</td></tr><tr><td><code>fillMaxWidth</code></td><td><code>true</code></td></tr><tr><td><code>minWidth</code>, <code>maxWidth</code></td><td><code>null</code></td></tr><tr><td><code>minHeight</code>, <code>maxHeight</code></td><td><code>null</code></td></tr><tr><td><code>shape</code></td><td><code>RoundedCornerShape(30.dp)</code></td></tr><tr><td><code>containerColor</code></td><td><code>null</code> → theme surface</td></tr><tr><td><code>contentColor</code></td><td><code>null</code> → theme onSurface</td></tr><tr><td><code>border</code></td><td>1.dp accent at <code>0.28f</code></td></tr><tr><td><code>tonalElevation</code></td><td><code>0.dp</code></td></tr><tr><td><code>shadowElevation</code></td><td><code>26.dp</code></td></tr><tr><td><code>modifier</code></td><td><code>Modifier</code></td></tr><tr><td><code>shadow</code></td><td><code>GuideKitInstructionBoxShadow()</code></td></tr><tr><td><code>shadow.elevation</code></td><td><code>30.dp</code></td></tr><tr><td><code>shadow colors</code></td><td>Black at <code>0.42f</code></td></tr>
+          </tbody></table></div></details>
+
+          <details><summary><span><code>GuideKitAutoScrollConfig</code><small>Per-step visibility spacing</small></span><b>3 options</b></summary><div class="table-scroll"><table><thead><tr><th>Option</th><th>Default</th><th>Purpose</th></tr></thead><tbody>
+            <tr><td><code>enabled</code></td><td><code>true</code></td><td>Enables automatic scroll requests.</td></tr><tr><td><code>minTopVisibleDistance</code></td><td><code>null</code> → arrow distance + 1.dp</td><td>Safe space above the target.</td></tr><tr><td><code>spacing</code></td><td><code>null</code> → arrow distance + 1.dp</td><td>Space between target and card.</td></tr>
+          </tbody></table></div></details>
+
+          <details><summary><span><code>Enums</code><small>All named choices</small></span><b>4 groups</b></summary><div class="enum-grid"><div><strong>GuideKitAnchor</strong><p>TopLeft, TopCenter, TopRight, CenterLeft, Center, CenterRight, BottomLeft, BottomCenter, BottomRight</p></div><div><strong>GuideKitArrowLineStyle</strong><p>Solid, SpacedDash, Dotted, ShortDash, MediumDash, LongDash, DashDot</p></div><div><strong>GuideKitArrowHead</strong><p>None, TargetSide, InstructionBoxSide, BothSides</p></div><div><strong>GuideKitTargetHighlightShape</strong><p>RoundedRect, Circle</p></div></div></details>
+        </div>
+      </div>
+    </section>
+
+    <section class="section ownership-section">
+      <div class="container ownership-grid">
+        <div class="section-heading reveal"><p class="section-kicker">Clear ownership</p><h2>Your app owns intent.<br>GuideKit owns the tour.</h2><p>No screen takeover or separate overlay architecture. Provide real target bounds and lifecycle callbacks; GuideKit handles the experience.</p><a class="text-link" href="https://github.com/tharukack/guidekit/tree/main/sample" target="_blank" rel="noreferrer">Explore the sample app <span aria-hidden="true">→</span></a></div>
+        <div class="ownership-card reveal"><div class="ownership-column"><span class="ownership-title"><i class="owner-purple"></i> GuideKit owns</span><ul><li>Step navigation</li><li>Highlight drawing</li><li>Arrow rendering</li><li>Instruction cards</li><li>Auto-scroll calculations</li></ul></div><div class="ownership-column"><span class="ownership-title"><i class="owner-green"></i> Your app owns</span><ul><li>Step definitions</li><li>Target measurement</li><li>Visibility state</li><li>Persistence</li><li>Analytics callbacks</li></ul></div></div>
+      </div>
+    </section>
+
+    <section class="section platform-section" id="platforms">
+      <div class="container"><div class="section-heading centered reveal"><p class="section-kicker">Platform support</p><h2>One shared API. Native-feeling guidance.</h2><p>Android and iOS are supported today. Desktop and web are on the roadmap.</p></div><div class="platform-grid reveal"><article class="platform-card supported"><span class="platform-symbol">A</span><div><strong>Android</strong><small>Supported</small></div><i>✓</i></article><article class="platform-card supported"><span class="platform-symbol apple">●</span><div><strong>iOS</strong><small>Supported</small></div><i>✓</i></article><article class="platform-card"><span class="platform-symbol">D</span><div><strong>Desktop</strong><small>Planned</small></div><i>→</i></article><article class="platform-card"><span class="platform-symbol">W</span><div><strong>Web</strong><small>Planned</small></div><i>→</i></article></div></div>
+    </section>
+
+    <section class="section final-cta">
+      <div class="cta-orb cta-orb-one" aria-hidden="true"></div>
+      <div class="cta-orb cta-orb-two" aria-hidden="true"></div>
+      <div class="container cta-content reveal">
+        <span class="cta-mark" aria-hidden="true">G</span>
+        <p class="section-kicker">Ready when your users are</p>
+        <h2>Make every first experience<br>feel obvious.</h2>
+        <p>Add your first coach mark in minutes, then shape every detail when you need to.</p>
+        <div class="hero-actions cta-actions">
+          <a class="button button-primary" href="#installation">Start building <span aria-hidden="true">→</span></a>
+          <a class="button button-secondary" href="https://github.com/tharukack/guidekit" target="_blank" rel="noreferrer">View on GitHub <span aria-hidden="true">↗</span></a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div class="footer-brand">
+        <img src="./assets/guide_kit_logo_horizontal.png" alt="GuideKit">
+        <p>Beautiful coach marks for Compose Multiplatform.</p>
+      </div>
+      <div class="footer-links">
+        <div><strong>Guide</strong><a href="#installation">Installation</a><a href="#quick-start">Quick start</a><a href="#customization">Customization</a></div>
+        <div><strong>Reference</strong><a href="#features">Features</a><a href="#api">API</a><a href="#platforms">Platforms</a></div>
+        <div><strong>Resources</strong><a href="https://github.com/tharukack/guidekit/tree/main/sample" target="_blank" rel="noreferrer">Sample app</a><a href="https://central.sonatype.com/artifact/io.github.tharukack/guidekit" target="_blank" rel="noreferrer">Maven Central</a><a href="https://github.com/tharukack/guidekit" target="_blank" rel="noreferrer">GitHub</a></div>
+      </div>
+    </div>
+    <div class="container footer-bottom">
+      <span>© <span data-year></span> GuideKit</span>
+      <span>Built for developers who care about the first mile.</span>
+    </div>
+  </footer>
+
+  <script src="./script.js" defer></script>
+</body>
+</html>
