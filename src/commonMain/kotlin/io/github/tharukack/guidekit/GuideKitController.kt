@@ -4,6 +4,68 @@ import androidx.compose.ui.geometry.Rect
 
 internal fun Int.toGuideKitPx(): Float = coerceAtLeast(0).toFloat()
 
+private fun <T> GuideKitOverride<T>.resolve(
+    provided: T?,
+    inherited: T,
+): T = when (this) {
+    GuideKitOverride.Inherit -> provided ?: inherited
+    is GuideKitOverride.Value -> value
+}
+
+internal fun GuideKitArrowConfigOverride.applyTo(
+    inherited: GuideKitArrowConfig,
+): GuideKitArrowConfig = inherited.copy(
+    enabled = enabled ?: inherited.enabled,
+    from = from ?: inherited.from,
+    to = to ?: inherited.to,
+    curveSeed = curveSeed ?: inherited.curveSeed,
+    minVisibleDistance = minVisibleDistance ?: inherited.minVisibleDistance,
+    lineStyle = lineStyle ?: inherited.lineStyle,
+    strokes = strokes ?: inherited.strokes,
+    strokeCap = strokeCap ?: inherited.strokeCap,
+    arrowHead = arrowHead ?: inherited.arrowHead,
+    arrowHeadLength = arrowHeadLength ?: inherited.arrowHeadLength,
+    arrowHeadAngleDegrees = arrowHeadAngleDegrees ?: inherited.arrowHeadAngleDegrees,
+    arrowHeadStrokes = arrowHeadStrokes ?: inherited.arrowHeadStrokes,
+)
+
+internal fun GuideKitTargetHighlightStyleOverride.applyTo(
+    inherited: GuideKitTargetHighlightStyle,
+): GuideKitTargetHighlightStyle = inherited.copy(
+    enabled = enabled ?: inherited.enabled,
+    shape = shape ?: inherited.shape,
+    cutoutEnabled = cutoutEnabled ?: inherited.cutoutEnabled,
+    padding = padding ?: inherited.padding,
+    cornerRadius = cornerRadius ?: inherited.cornerRadius,
+    glowStrokes = glowStrokes ?: inherited.glowStrokes,
+    borderColor = borderColorOverride.resolve(borderColor, inherited.borderColor),
+    borderWidth = borderWidth ?: inherited.borderWidth,
+    innerBorderColor = innerBorderColor ?: inherited.innerBorderColor,
+    innerBorderWidth = innerBorderWidth ?: inherited.innerBorderWidth,
+    innerBorderInset = innerBorderInset ?: inherited.innerBorderInset,
+)
+
+internal fun GuideKitInstructionBoxStyleOverride.applyTo(
+    inherited: GuideKitInstructionBoxStyle,
+): GuideKitInstructionBoxStyle = inherited.copy(
+    alignment = alignment ?: inherited.alignment,
+    outerPadding = outerPaddingOverride.resolve(outerPadding, inherited.outerPadding),
+    contentPadding = contentPadding ?: inherited.contentPadding,
+    fillMaxWidth = fillMaxWidth ?: inherited.fillMaxWidth,
+    minWidth = minWidthOverride.resolve(minWidth, inherited.minWidth),
+    maxWidth = maxWidthOverride.resolve(maxWidth, inherited.maxWidth),
+    minHeight = minHeightOverride.resolve(minHeight, inherited.minHeight),
+    maxHeight = maxHeightOverride.resolve(maxHeight, inherited.maxHeight),
+    shape = shape ?: inherited.shape,
+    containerColor = containerColorOverride.resolve(containerColor, inherited.containerColor),
+    contentColor = contentColorOverride.resolve(contentColor, inherited.contentColor),
+    border = borderOverride.resolve(border, inherited.border),
+    tonalElevation = tonalElevation ?: inherited.tonalElevation,
+    shadowElevation = shadowElevation ?: inherited.shadowElevation,
+    modifier = modifier ?: inherited.modifier,
+    shadow = shadowOverride.resolve(shadow, inherited.shadow),
+)
+
 class GuideKitController(
     stepCount: Int,
     initialStepIndex: Int = 0,
@@ -86,7 +148,9 @@ internal fun resolveGuideKitStep(
 
     val safeStepIndex = requestedStepIndex.coerceIn(0, steps.lastIndex)
     val step = steps[safeStepIndex]
-    val targetHighlight = step.targetHighlight ?: style.targetHighlight
+    val arrowConfig = step.arrowConfigOverride?.applyTo(style.arrowConfig) ?: style.arrowConfig
+    val targetHighlight = step.targetHighlightOverride?.applyTo(style.targetHighlight) ?: style.targetHighlight
+    val instructionBox = step.instructionBoxOverride?.applyTo(style.instructionBox) ?: style.instructionBox
     val isLastStep = safeStepIndex == steps.lastIndex
 
     return GuideKitResolvedStep(
@@ -94,9 +158,9 @@ internal fun resolveGuideKitStep(
         step = step,
         isLastStep = isLastStep,
         primaryButtonText = step.primaryButtonText ?: if (isLastStep) "Got it" else "Next",
-        arrowConfig = step.arrowConfig ?: style.arrowConfig,
+        arrowConfig = arrowConfig,
         targetHighlight = targetHighlight,
-        instructionBox = step.instructionBox ?: style.instructionBox,
+        instructionBox = instructionBox,
         autoScroll = step.autoScroll,
         highlightBounds = resolveGuideKitHighlightBounds(
             targetBounds = step.targetBounds,

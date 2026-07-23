@@ -1,21 +1,38 @@
-name: Publish
+name: Publish and release
 
 on:
+  push:
+    tags:
+      - "v*"
   workflow_dispatch:
-  release:
-    types:
-      - published
+    inputs:
+      tag:
+        description: Existing release tag, for example v1.1.0
+        required: true
+        type: string
+
+concurrency:
+  group: release-${{ github.event_name == 'workflow_dispatch' && inputs.tag || github.ref_name }}
+  cancel-in-progress: false
 
 jobs:
-  publish:
+  publish-and-release:
+    name: Publish to Maven Central and create GitHub release
     runs-on: macos-latest
+    timeout-minutes: 60
 
     permissions:
-      contents: read
+      contents: write
+
+    env:
+      RELEASE_TAG: ${{ github.event_name == 'workflow_dispatch' && inputs.tag || github.ref_name }}
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event_name == 'workflow_dispatch' && inputs.tag || github.ref }}
+          fetch-depth: 0
 
       - name: Set up JDK 17
         uses: actions/setup-java@v4
@@ -29,13 +46,19 @@ jobs:
       - name: Make Gradle wrapper executable
         run: chmod +x ./gradlew
 
-      - name: Build and test
-        run: ./gradlew build allTests --stacktrace
-
       - name: Verify release version
-        if: github.event_name == 'release'
         run: |
-          TAG_VERSION="${GITHUB_REF_NAME#v}"
+          if ! printf '%s\n' "$RELEASE_TAG" | grep -Eq '^v[0-9]+\.[0-9]+\.[0-9]+$'; then
+            echo "Release tag must use the format v1.2.3. Received: $RELEASE_TAG"
+            exit 1
+          fi
+
+          if ! git rev-parse --verify --quiet "refs/tags/$RELEASE_TAG"; then
+            echo "Release tag does not exist: $RELEASE_TAG"
+            exit 1
+          fi
+
+          TAG_VERSION="${RELEASE_TAG#v}"
           PROJECT_VERSION=$(./gradlew properties -q | awk '/^version:/ { print $2 }')
 
           echo "Release tag version: $TAG_VERSION"
@@ -46,10 +69,41 @@ jobs:
             exit 1
           fi
 
-      - name: Publish to Maven Central
-        run: ./gradlew publishToMavenCentral --stacktrace
+          echo "PROJECT_VERSION=$PROJECT_VERSION" >> "$GITHUB_ENV"
+
+      - name: Prepare release notes
+        run: |
+          awk -v version="$PROJECT_VERSION" '
+            $0 ~ "^## \\[" version "\\]" { in_version = 1; next }
+            in_version && /^## \[/ { exit }
+            in_version && /^### Library changes$/ { found = 1; in_library = 1; next }
+            in_library && /^### / { exit }
+            in_library { print }
+            END { if (!found) exit 1 }
+          ' CHANGELOG.md > release-notes.md
+
+          if ! grep -q '[^[:space:]]' release-notes.md; then
+            echo "No library changes found in the changelog for $PROJECT_VERSION."
+            exit 1
+          fi
+
+      - name: Build and test
+        run: ./gradlew build allTests --stacktrace
+
+      - name: Publish and release to Maven Central
+        run: ./gradlew publishAndReleaseToMavenCentral --stacktrace
         env:
           ORG_GRADLE_PROJECT_mavenCentralUsername: ${{ secrets.MAVEN_CENTRAL_USERNAME }}
           ORG_GRADLE_PROJECT_mavenCentralPassword: ${{ secrets.MAVEN_CENTRAL_PASSWORD }}
           ORG_GRADLE_PROJECT_signingInMemoryKey: ${{ secrets.SIGNING_KEY }}
           ORG_GRADLE_PROJECT_signingInMemoryKeyPassword: ${{ secrets.SIGNING_PASSWORD }}
+
+      - name: Create GitHub release
+        run: |
+          gh release create "$RELEASE_TAG" \
+            --verify-tag \
+            --title "GuideKit $PROJECT_VERSION" \
+            --notes-file release-notes.md \
+            --latest
+        env:
+          GH_TOKEN: ${{ github.token }}

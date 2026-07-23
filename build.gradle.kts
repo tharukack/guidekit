@@ -9,7 +9,7 @@ plugins {
 }
 
 group = "io.github.tharukack"
-version = "1.0.0"
+version = "1.1.0"
 
 kotlin {
     androidTarget {

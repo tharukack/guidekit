@@ -4,6 +4,21 @@ All notable changes to GuideKit will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project follows semantic versioning.
 
+## [1.1.0] - 2026-07-23
+
+### Library changes
+
+- Added partial per-step styling with `GuideKitArrowConfigOverride`, `GuideKitTargetHighlightStyleOverride`, and `GuideKitInstructionBoxStyleOverride`.
+- Added `GuideKitOverride.Inherit` and `GuideKitOverride.Value(...)` for nullable properties, allowing a step to inherit a global value, provide a value, or explicitly clear it with `GuideKitOverride.Value(null)`.
+- Replaced the complete `GuideKitStep.arrowConfig`, `targetHighlight`, and `instructionBox` objects with field-level `arrowConfigOverride`, `targetHighlightOverride`, and `instructionBoxOverride` properties. Styles now resolve in the order library defaults → global `GuideKitStyle` → explicit step overrides.
+
+### Project and documentation
+
+- Expanded the sample tours with global theme demonstrations, arrow line and anchor variants, repeated targets, top-positioned instructions, arrow-free steps, and circular target highlights.
+- Moved the sample guides to the full-screen parent so overlays render above the smaller bottom navigation and the complete screen content.
+- Updated the README and website examples, customization guide, and API reference for the new step-override behavior.
+- Refreshed the documentation website with the latest demo GIFs and screenshots, a real-flow gallery, the GuideKit favicon, and larger syntax-highlighted Kotlin examples.
+
 ## [1.0.0] - 2026-07-22
 
 ### Changed

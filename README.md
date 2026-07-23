@@ -11,7 +11,7 @@
 </p>
 
 <p align="center">
-  <a href="https://central.sonatype.com/search?q=guidekit"><img alt="Maven Central" src="https://img.shields.io/badge/Maven%20Central-0.1.1-1f6feb?style=for-the-badge" /></a>
+  <a href="https://central.sonatype.com/search?q=guidekit"><img alt="Maven Central" src="https://img.shields.io/badge/Maven%20Central-1.1.0-1f6feb?style=for-the-badge" /></a>
   <img alt="Android" src="https://img.shields.io/badge/Android-supported-16A34A?style=for-the-badge&logo=android&logoColor=white" />
   <img alt="iOS" src="https://img.shields.io/badge/iOS-supported-2563EB?style=for-the-badge&logo=apple&logoColor=white" />
   <img alt="Kotlin Multiplatform" src="https://img.shields.io/badge/Kotlin%20Multiplatform-ready-7F52FF?style=for-the-badge&logo=kotlin&logoColor=white" />
@@ -36,9 +36,9 @@
 ## Live Demo
 
 <p align="center">
-  <img src="docs/assets/demo_1.gif" alt="GuideKit demo showing coach marks, arrows, and auto-scroll" width="320" />
+  <img src="docs/assets/demo_3_1.gif" alt="GuideKit demo showing coach marks, arrows, and auto-scroll" width="320" />
   &nbsp;&nbsp;&nbsp;
-  <img src="docs/assets/demo_1_2.gif" alt="GuideKit demo showing alternate styling and circular highlights" width="320" />
+  <img src="docs/assets/demo_3_2.gif" alt="GuideKit demo showing alternate styling and circular highlights" width="320" />
 </p>
 
 ---
@@ -48,7 +48,7 @@
 Add GuideKit to the Compose Multiplatform source set where you want to show tours.
 
 ```kotlin
-implementation("io.github.tharukack:guidekit:0.1.1")
+implementation("io.github.tharukack:guidekit:1.1.0")
 ```
 
 For Kotlin Multiplatform projects:
@@ -57,7 +57,7 @@ For Kotlin Multiplatform projects:
 kotlin {
     sourceSets {
         commonMain.dependencies {
-            implementation("io.github.tharukack:guidekit:0.1.1")
+            implementation("io.github.tharukack:guidekit:1.1.0")
         }
     }
 }
@@ -123,7 +123,7 @@ fun MainScreen() {
                         targetBounds = targetBounds,
                         title = "Create your first item",
                         description = "Tap here to start a new workflow.",
-                        arrowConfig = GuideKitArrowConfig(
+                        arrowConfigOverride = GuideKitArrowConfigOverride(
                             from = GuideKitAnchor.TopRight, // instruction box connection point
                             to = GuideKitAnchor.BottomCenter, // target connection point
                         ),
@@ -169,7 +169,7 @@ val guideSteps = listOf(
         targetBounds = createButtonBounds,
         title = "Create your first item",
         description = "Tap here to start a new workflow.",
-        arrowConfig = GuideKitArrowConfig(
+        arrowConfigOverride = GuideKitArrowConfigOverride(
             from = GuideKitAnchor.TopRight,
             to = GuideKitAnchor.BottomCenter,
         ),
@@ -178,7 +178,7 @@ val guideSteps = listOf(
         targetBounds = activityCardBounds,
         title = "Track your progress",
         description = "Your latest activity and important updates appear here.",
-        arrowConfig = GuideKitArrowConfig(
+        arrowConfigOverride = GuideKitArrowConfigOverride(
             from = GuideKitAnchor.BottomLeft,
             to = GuideKitAnchor.TopCenter,
         ),
@@ -187,7 +187,7 @@ val guideSteps = listOf(
         targetBounds = profileButtonBounds,
         title = "Make it yours",
         description = "Open your profile to customize your experience.",
-        arrowConfig = GuideKitArrowConfig(
+        arrowConfigOverride = GuideKitArrowConfigOverride(
             from = GuideKitAnchor.TopRight,
             to = GuideKitAnchor.CenterLeft,
         ),
@@ -253,32 +253,34 @@ GuideKit(
 | `targetHighlight` | `GuideKitTargetHighlightStyle()` | Default target highlight inherited by steps. |
 | `instructionBox` | `GuideKitInstructionBoxStyle()` | Default instruction card inherited by steps. |
 
-Override a style only for the step that needs it:
+Override only the properties a step needs. Every property omitted from an override continues to use its global value:
 
 ```kotlin
 GuideKitStep(
     targetBounds = profileButtonBounds,
     title = "Open your profile",
     description = "Manage your preferences here.",
-    arrowConfig = GuideKitArrowConfig(
+    arrowConfigOverride = GuideKitArrowConfigOverride(
         from = GuideKitAnchor.BottomCenter,
         to = GuideKitAnchor.CenterRight,
         lineStyle = GuideKitArrowLineStyle.Solid,
     ),
-    targetHighlight = GuideKitTargetHighlightStyle(
+    targetHighlightOverride = GuideKitTargetHighlightStyleOverride(
         shape = GuideKitTargetHighlightShape.Circle,
     ),
 )
 ```
 
-> **Important:** A step-specific `arrowConfig`, `targetHighlight`, or `instructionBox` replaces the corresponding global configuration as a complete object. Unspecified properties use that object's library defaults; they are not merged with the global object.
+GuideKit resolves styles in this order: **library defaults → global `GuideKitStyle` → explicit step overrides**. A step override never resets an unrelated global color, shape, stroke, padding, or shadow.
+
+All ordinary override properties default to `null`, meaning “inherit the global value.” For properties where `null` is itself meaningful, the matching `...Override` property uses `GuideKitOverride.Inherit` by default and accepts `GuideKitOverride.Value(...)` for an explicit value—including `null`.
 
 | Configuration | Global default | Step-specific override |
 | --- | --- | --- |
 | Colors and overlay | `GuideKitStyle` | Not overridden per step |
-| Arrow | `GuideKitStyle.arrowConfig` | `GuideKitStep.arrowConfig` |
-| Target highlight | `GuideKitStyle.targetHighlight` | `GuideKitStep.targetHighlight` |
-| Instruction card | `GuideKitStyle.instructionBox` | `GuideKitStep.instructionBox` |
+| Arrow | `GuideKitStyle.arrowConfig` | `GuideKitStep.arrowConfigOverride` |
+| Target highlight | `GuideKitStyle.targetHighlight` | `GuideKitStep.targetHighlightOverride` |
+| Instruction card | `GuideKitStyle.instructionBox` | `GuideKitStep.instructionBoxOverride` |
 | Text and button label | — | `GuideKitStep` |
 | Auto-scroll | — | `GuideKitStep.autoScroll` |
 
@@ -309,9 +311,9 @@ Use `descriptionHighlights = listOf("phrase")` for one highlighted phrase or add
 | `primaryButtonText` | `null` → **Next**, or **Got it** on the last step | Overrides the primary button label. |
 | `descriptionHighlights` | `emptyList()` | Highlights one or more exact phrases from `description`. |
 | `instructionBottomPadding` | `104.dp` | Bottom padding used by the default instruction-card placement. |
-| `arrowConfig` | `null` → global `style.arrowConfig` | Replaces the arrow configuration for this step. |
-| `targetHighlight` | `null` → global `style.targetHighlight` | Replaces the target highlight for this step. |
-| `instructionBox` | `null` → global `style.instructionBox` | Replaces the instruction card for this step. |
+| `arrowConfigOverride` | `null` → inherit global arrow | Overrides only supplied arrow properties. |
+| `targetHighlightOverride` | `null` → inherit global highlight | Overrides only supplied highlight properties. |
+| `instructionBoxOverride` | `null` → inherit global instruction card | Overrides only supplied card properties. |
 | `autoScroll` | `GuideKitAutoScrollConfig()` | Controls automatic scrolling for this step. |
 
 ### Customize arrows
@@ -339,7 +341,7 @@ val specialStep = GuideKitStep(
     targetBounds = actionButtonBounds,
     title = "Take action",
     description = "Tap here when you are ready.",
-    arrowConfig = GuideKitArrowConfig(
+    arrowConfigOverride = GuideKitArrowConfigOverride(
         from = GuideKitAnchor.TopRight,
         to = GuideKitAnchor.CenterLeft,
         curveSeed = 3,
@@ -404,7 +406,7 @@ val avatarStep = GuideKitStep(
     targetBounds = avatarBounds,
     title = "This is your profile",
     description = "Tap your avatar to manage your account.",
-    targetHighlight = GuideKitTargetHighlightStyle(
+    targetHighlightOverride = GuideKitTargetHighlightStyleOverride(
         shape = GuideKitTargetHighlightShape.Circle,
         padding = 16,
         glowStrokes = listOf(
@@ -441,7 +443,7 @@ For a custom `GuideKitTargetHighlightStroke`, `width` and `alpha` are required, 
 
 ### Customize the instruction card
 
-Use `GuideKitInstructionBoxStyle` to control where the instruction card appears and how it looks. It can be applied globally or replaced for one step.
+Use `GuideKitInstructionBoxStyle` to define the global instruction card. Use `GuideKitInstructionBoxStyleOverride` to change selected properties for one step while retaining every other global value.
 
 ```kotlin
 val guideStyle = GuideKitStyle(
@@ -478,7 +480,7 @@ GuideKitStep(
     title = "Your weekly summary",
     description = "Everything important appears in this section.",
     instructionBottomPadding = 72.dp,
-    instructionBox = GuideKitInstructionBoxStyle(
+    instructionBoxOverride = GuideKitInstructionBoxStyleOverride(
         alignment = Alignment.BottomCenter,
         fillMaxWidth = false,
         maxWidth = 300.dp,
@@ -504,6 +506,22 @@ GuideKitStep(
 | `modifier` | `Modifier` | Applies an additional modifier to the instruction card. |
 
 The default `GuideKitInstructionBoxShadow` uses `30.dp` elevation with black ambient and spot colors at `0.42f` alpha.
+
+To explicitly clear a nullable global value for one step, use its matching override-value property:
+
+```kotlin
+GuideKitStep(
+    targetBounds = targetBounds,
+    title = "A simpler card",
+    description = "This step removes the global border and shadow.",
+    instructionBoxOverride = GuideKitInstructionBoxStyleOverride(
+        borderOverride = GuideKitOverride.Value(null),
+        shadowOverride = GuideKitOverride.Value(null),
+    ),
+)
+```
+
+The same pattern is available for nullable values such as `outerPadding`, size constraints, container and content colors, and target `borderColor`.
 
 `instructionBottomPadding` belongs to `GuideKitStep`. It is used only when the instruction box's global or step-specific `outerPadding` is `null`.
 

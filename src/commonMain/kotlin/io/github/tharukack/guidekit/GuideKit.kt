@@ -136,9 +136,9 @@ data class GuideKitStep(
     val primaryButtonText: String? = null,
     val descriptionHighlights: List<String> = emptyList(),
     val instructionBottomPadding: Dp = 104.dp,
-    val arrowConfig: GuideKitArrowConfig? = null,
-    val targetHighlight: GuideKitTargetHighlightStyle? = null,
-    val instructionBox: GuideKitInstructionBoxStyle? = null,
+    val arrowConfigOverride: GuideKitArrowConfigOverride? = null,
+    val targetHighlightOverride: GuideKitTargetHighlightStyleOverride? = null,
+    val instructionBoxOverride: GuideKitInstructionBoxStyleOverride? = null,
     val autoScroll: GuideKitAutoScrollConfig = GuideKitAutoScrollConfig(),
 )
 
@@ -217,6 +217,70 @@ data class GuideKitInstructionBoxShadow(
     val elevation: Dp = 30.dp,
     val ambientColor: Color = Color.Black.copy(alpha = 0.42f),
     val spotColor: Color = Color.Black.copy(alpha = 0.42f),
+)
+
+sealed interface GuideKitOverride<out T> {
+    data object Inherit : GuideKitOverride<Nothing>
+
+    data class Value<T>(val value: T) : GuideKitOverride<T>
+}
+
+data class GuideKitArrowConfigOverride(
+    val enabled: Boolean? = null,
+    val from: GuideKitAnchor? = null,
+    val to: GuideKitAnchor? = null,
+    val curveSeed: Int? = null,
+    val minVisibleDistance: Dp? = null,
+    val lineStyle: GuideKitArrowLineStyle? = null,
+    val strokes: List<GuideKitArrowStroke>? = null,
+    val strokeCap: StrokeCap? = null,
+    val arrowHead: GuideKitArrowHead? = null,
+    val arrowHeadLength: Int? = null,
+    val arrowHeadAngleDegrees: Int? = null,
+    val arrowHeadStrokes: List<GuideKitArrowStroke>? = null,
+)
+
+data class GuideKitTargetHighlightStyleOverride(
+    val enabled: Boolean? = null,
+    val shape: GuideKitTargetHighlightShape? = null,
+    val cutoutEnabled: Boolean? = null,
+    val padding: Int? = null,
+    val cornerRadius: Dp? = null,
+    val glowStrokes: List<GuideKitTargetHighlightStroke>? = null,
+    val borderColor: Color? = null,
+    val borderColorOverride: GuideKitOverride<Color?> = GuideKitOverride.Inherit,
+    val borderWidth: Int? = null,
+    val innerBorderColor: Color? = null,
+    val innerBorderWidth: Int? = null,
+    val innerBorderInset: Int? = null,
+)
+
+data class GuideKitInstructionBoxStyleOverride(
+    val alignment: Alignment? = null,
+    val outerPadding: PaddingValues? = null,
+    val outerPaddingOverride: GuideKitOverride<PaddingValues?> = GuideKitOverride.Inherit,
+    val contentPadding: PaddingValues? = null,
+    val fillMaxWidth: Boolean? = null,
+    val minWidth: Dp? = null,
+    val minWidthOverride: GuideKitOverride<Dp?> = GuideKitOverride.Inherit,
+    val maxWidth: Dp? = null,
+    val maxWidthOverride: GuideKitOverride<Dp?> = GuideKitOverride.Inherit,
+    val minHeight: Dp? = null,
+    val minHeightOverride: GuideKitOverride<Dp?> = GuideKitOverride.Inherit,
+    val maxHeight: Dp? = null,
+    val maxHeightOverride: GuideKitOverride<Dp?> = GuideKitOverride.Inherit,
+    val shape: Shape? = null,
+    val containerColor: Color? = null,
+    val containerColorOverride: GuideKitOverride<Color?> = GuideKitOverride.Inherit,
+    val contentColor: Color? = null,
+    val contentColorOverride: GuideKitOverride<Color?> = GuideKitOverride.Inherit,
+    val border: BorderStroke? = null,
+    val borderOverride: GuideKitOverride<BorderStroke?> = GuideKitOverride.Inherit,
+    val tonalElevation: Dp? = null,
+    val shadowElevation: Dp? = null,
+    val modifier: Modifier? = null,
+    val shadow: GuideKitInstructionBoxShadow? = null,
+    val shadowOverride: GuideKitOverride<GuideKitInstructionBoxShadow?> = GuideKitOverride.Inherit,
 )
 
 enum class GuideKitAnchor {

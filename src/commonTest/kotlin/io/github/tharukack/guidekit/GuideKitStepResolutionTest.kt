@@ -1,6 +1,8 @@
 package io.github.tharukack.guidekit
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.ui.geometry.Rect
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -74,28 +76,74 @@ class GuideKitStepResolutionTest {
     }
 
     @Test
-    fun stepStylesOverrideGuideKitStyleForThatStepOnly() {
+    fun stepOverridesChangeOnlyExplicitProperties() {
         val style = GuideKitStyle(
-            arrowConfig = GuideKitArrowConfig(from = GuideKitAnchor.TopCenter),
-            targetHighlight = GuideKitTargetHighlightStyle(shape = GuideKitTargetHighlightShape.RoundedRect),
-            instructionBox = GuideKitInstructionBoxStyle(fillMaxWidth = true),
+            arrowConfig = GuideKitArrowConfig(
+                from = GuideKitAnchor.TopCenter,
+                to = GuideKitAnchor.CenterRight,
+                minVisibleDistance = 72.dp,
+            ),
+            targetHighlight = GuideKitTargetHighlightStyle(
+                shape = GuideKitTargetHighlightShape.RoundedRect,
+                padding = 14,
+                borderWidth = 7,
+            ),
+            instructionBox = GuideKitInstructionBoxStyle(
+                fillMaxWidth = true,
+                maxWidth = 480.dp,
+                containerColor = Color.Magenta,
+            ),
         )
         val step = guideStep(
             targetBounds = Rect(20f, 30f, 120f, 70f),
-            arrowConfig = GuideKitArrowConfig(from = GuideKitAnchor.BottomCenter),
-            targetHighlight = GuideKitTargetHighlightStyle(
+            arrowConfigOverride = GuideKitArrowConfigOverride(from = GuideKitAnchor.BottomCenter),
+            targetHighlightOverride = GuideKitTargetHighlightStyleOverride(
                 shape = GuideKitTargetHighlightShape.Circle,
                 padding = 0,
             ),
-            instructionBox = GuideKitInstructionBoxStyle(fillMaxWidth = false),
+            instructionBoxOverride = GuideKitInstructionBoxStyleOverride(fillMaxWidth = false),
         )
 
         val resolved = assertNotNull(resolveGuideKitStep(listOf(step), requestedStepIndex = 0, style = style))
 
         assertEquals(GuideKitAnchor.BottomCenter, resolved.arrowConfig.from)
+        assertEquals(GuideKitAnchor.CenterRight, resolved.arrowConfig.to)
+        assertEquals(72.dp, resolved.arrowConfig.minVisibleDistance)
         assertEquals(GuideKitTargetHighlightShape.Circle, resolved.targetHighlight.shape)
+        assertEquals(7, resolved.targetHighlight.borderWidth)
         assertFalse(resolved.instructionBox.fillMaxWidth)
+        assertEquals(480.dp, resolved.instructionBox.maxWidth)
+        assertEquals(Color.Magenta, resolved.instructionBox.containerColor)
         assertEquals(Rect(20f, 0f, 120f, 100f), resolved.highlightBounds)
+    }
+
+    @Test
+    fun nullableStepOverridesCanExplicitlyClearGlobalValues() {
+        val style = GuideKitStyle(
+            targetHighlight = GuideKitTargetHighlightStyle(borderColor = Color.Red),
+            instructionBox = GuideKitInstructionBoxStyle(
+                maxWidth = 420.dp,
+                border = BorderStroke(1.dp, Color.Red),
+                shadow = GuideKitInstructionBoxShadow(),
+            ),
+        )
+        val step = guideStep(
+            targetHighlightOverride = GuideKitTargetHighlightStyleOverride(
+                borderColorOverride = GuideKitOverride.Value(null),
+            ),
+            instructionBoxOverride = GuideKitInstructionBoxStyleOverride(
+                maxWidthOverride = GuideKitOverride.Value(null),
+                borderOverride = GuideKitOverride.Value(null),
+                shadowOverride = GuideKitOverride.Value(null),
+            ),
+        )
+
+        val resolved = assertNotNull(resolveGuideKitStep(listOf(step), requestedStepIndex = 0, style = style))
+
+        assertNull(resolved.targetHighlight.borderColor)
+        assertNull(resolved.instructionBox.maxWidth)
+        assertNull(resolved.instructionBox.border)
+        assertNull(resolved.instructionBox.shadow)
     }
 
     @Test
@@ -137,7 +185,7 @@ class GuideKitStepResolutionTest {
                 steps = listOf(
                     guideStep(
                         targetBounds = Rect(20f, 30f, 120f, 90f),
-                        targetHighlight = GuideKitTargetHighlightStyle(enabled = false),
+                        targetHighlightOverride = GuideKitTargetHighlightStyleOverride(enabled = false),
                     ),
                 ),
                 requestedStepIndex = 0,
@@ -176,7 +224,7 @@ class GuideKitStepResolutionTest {
                 steps = listOf(
                     guideStep(
                         targetBounds = Rect(0f, 100f, 100f, 200f),
-                        targetHighlight = GuideKitTargetHighlightStyle(padding = 0),
+                        targetHighlightOverride = GuideKitTargetHighlightStyleOverride(padding = 0),
                     ),
                 ),
                 requestedStepIndex = 0,
@@ -199,18 +247,18 @@ class GuideKitStepResolutionTest {
         title: String = "Title",
         targetBounds: Rect? = Rect(0f, 0f, 100f, 100f),
         primaryButtonText: String? = null,
-        arrowConfig: GuideKitArrowConfig? = null,
-        targetHighlight: GuideKitTargetHighlightStyle? = null,
-        instructionBox: GuideKitInstructionBoxStyle? = null,
+        arrowConfigOverride: GuideKitArrowConfigOverride? = null,
+        targetHighlightOverride: GuideKitTargetHighlightStyleOverride? = null,
+        instructionBoxOverride: GuideKitInstructionBoxStyleOverride? = null,
         autoScroll: GuideKitAutoScrollConfig = GuideKitAutoScrollConfig(),
     ): GuideKitStep = GuideKitStep(
         targetBounds = targetBounds,
         title = title,
         description = "Description",
         primaryButtonText = primaryButtonText,
-        arrowConfig = arrowConfig,
-        targetHighlight = targetHighlight,
-        instructionBox = instructionBox,
+        arrowConfigOverride = arrowConfigOverride,
+        targetHighlightOverride = targetHighlightOverride,
+        instructionBoxOverride = instructionBoxOverride,
         autoScroll = autoScroll,
     )
 }

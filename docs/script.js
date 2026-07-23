@@ -52,6 +52,41 @@ document.querySelectorAll('[data-copy], [data-copy-target]').forEach((button) =>
   });
 });
 
+const kotlinKeywords = new Set([
+  'as', 'break', 'by', 'class', 'continue', 'data', 'do', 'else', 'false',
+  'for', 'fun', 'if', 'in', 'interface', 'is', 'null', 'object', 'package',
+  'private', 'public', 'return', 'sealed', 'true', 'val', 'var', 'when', 'while',
+]);
+
+const escapeCode = (value) => value.replace(/[&<>]/g, (character) => ({
+  '&': '&amp;',
+  '<': '&lt;',
+  '>': '&gt;',
+})[character]);
+
+document.querySelectorAll('pre code').forEach((code) => {
+  if (code.children.length > 0) return;
+
+  const source = code.textContent ?? '';
+  const tokenPattern = /\/\/[^\n]*|"(?:\\.|[^"\\])*"|@\w+|\b\d+(?:\.\d+)?(?:f|dp)?\b|\b[A-Za-z_]\w*\b|[\s\S]/g;
+  code.innerHTML = Array.from(source.matchAll(tokenPattern), (match) => {
+    const token = match[0];
+    let tokenClass = '';
+
+    if (token.startsWith('//')) tokenClass = 'c-comment';
+    else if (token.startsWith('"')) tokenClass = 'c-string';
+    else if (token.startsWith('@')) tokenClass = 'c-annotation';
+    else if (/^\d/.test(token)) tokenClass = 'c-number';
+    else if (['true', 'false', 'null'].includes(token)) tokenClass = 'c-constant';
+    else if (kotlinKeywords.has(token)) tokenClass = 'c-keyword';
+    else if (/^[A-Z]/.test(token)) tokenClass = 'c-type';
+    else if (/^[A-Za-z_]\w*$/.test(token) && /^\s*=/.test(source.slice((match.index ?? 0) + token.length))) tokenClass = 'c-property';
+
+    const escaped = escapeCode(token);
+    return tokenClass ? `<span class="${tokenClass}">${escaped}</span>` : escaped;
+  }).join('');
+});
+
 const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const reveals = document.querySelectorAll('.reveal');
 
