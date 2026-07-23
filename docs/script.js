@@ -2,6 +2,13 @@ const header = document.querySelector('[data-header]');
 const nav = document.querySelector('[data-nav]');
 const navToggle = document.querySelector('[data-nav-toggle]');
 
+const closeNavigation = () => {
+  nav?.classList.remove('open');
+  navToggle?.setAttribute('aria-expanded', 'false');
+  navToggle?.setAttribute('aria-label', 'Open navigation');
+  document.body.classList.remove('nav-open');
+};
+
 const setHeaderState = () => {
   header?.classList.toggle('scrolled', window.scrollY > 16);
 };
@@ -17,12 +24,16 @@ navToggle?.addEventListener('click', () => {
 });
 
 nav?.querySelectorAll('a').forEach((link) => {
-  link.addEventListener('click', () => {
-    nav.classList.remove('open');
-    navToggle?.setAttribute('aria-expanded', 'false');
-    navToggle?.setAttribute('aria-label', 'Open navigation');
-    document.body.classList.remove('nav-open');
-  });
+  link.addEventListener('click', closeNavigation);
+});
+
+document.addEventListener('keydown', (event) => {
+  if (event.key === 'Escape') closeNavigation();
+});
+
+const desktopNavigation = window.matchMedia('(min-width: 721px)');
+desktopNavigation.addEventListener?.('change', (event) => {
+  if (event.matches) closeNavigation();
 });
 
 const copyText = async (button, text) => {

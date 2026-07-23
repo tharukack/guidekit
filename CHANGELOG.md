@@ -17,7 +17,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - Expanded the sample tours with global theme demonstrations, arrow line and anchor variants, repeated targets, top-positioned instructions, arrow-free steps, and circular target highlights.
 - Moved the sample guides to the full-screen parent so overlays render above the smaller bottom navigation and the complete screen content.
 - Updated the README and website examples, customization guide, and API reference for the new step-override behavior.
-- Refreshed the documentation website with the latest demo GIFs and screenshots, a real-flow gallery, the GuideKit favicon, and larger syntax-highlighted Kotlin examples.
+- Refreshed the documentation website with the latest demo GIFs and screenshots, a real-flow gallery, the GuideKit favicon, larger syntax-highlighted Kotlin examples, and improved mobile navigation and responsive layouts.
 
 ## [1.0.0] - 2026-07-22
 
