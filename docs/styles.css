@@ -190,8 +190,6 @@ h1 span { color: transparent; background: linear-gradient(95deg, #9e79ff, #6e42f
 .install-option .install-label { display: flex; align-items: center; min-height: 54px; margin: 0; padding: 0 92px 0 20px; color: #a9a4b7; border-bottom: 1px solid rgba(255,255,255,.08); background: #141128; font-size: 10px; }
 .install-option pre { min-height: 0; margin: 0; padding: 21px 22px 24px; overflow: auto; color: #d8d3e4; font-size: 13px; line-height: 1.75; font-variant-ligatures: none; }
 .install-option .copy-button { position: absolute; right: 12px; top: 10px; }
-.version-note { margin: 22px 0 0; padding: 18px 20px; border-left: 3px solid var(--purple); border-radius: 0 14px 14px 0; color: var(--muted); background: var(--purple-pale); font-size: 13px; line-height: 1.7; }
-.version-note strong { color: var(--text); }
 
 .quick-grid { position: relative; z-index: 2; display: grid; gap: 18px; }
 .guide-step { display: grid; grid-template-columns: .78fr 1.22fr; gap: 34px; align-items: start; padding: 28px; border: 1px solid rgba(255,255,255,.09); border-radius: 24px; background: rgba(255,255,255,.035); }
